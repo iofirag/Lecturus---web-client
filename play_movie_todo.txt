@@ -1,0 +1,7 @@
+change elements json structure-
+	-for a minimal one. to have just the changes.
+	-in the code run with intervals - and every second increment the video second (use as index in array elements)
+	and check if the (json.elements.key = to the index that incremented) so show its photo/text
+
+put the last image - 
+	-that show. for show something and not black screen
