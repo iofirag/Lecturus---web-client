@@ -1,0 +1,14 @@
+html, body { margin: 0; padding: 0; }
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center; /* !!! */
+	background-color: #C1C4C4;
+}
+#media-player{
+	margin: 0 auto;
+}
+
+#secondSlider, #slider {
+	width: 90%;
+}

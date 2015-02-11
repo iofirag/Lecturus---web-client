@@ -10,7 +10,6 @@ var starttimeMS;
 var endtimeMS;
 var totaltimeMS=0;
 var resttimeMS=0;
-var isSeek = false;
 
 $(document).ready(function() {
 	
@@ -81,10 +80,7 @@ $(document).ready(function() {
 			
 			// Change audio source
 			// Load & play
-			$("#audioSrc").attr("src", videoJson.audio[audio_timeCounter].sound);
-			var video = document.getElementById("media-video");
-			video.load();
-			video.play();
+			playAudio_withSeek(0);
 			
 			// Start intervals again
 			//interval = setInterval(doEverySecond , 1000);
@@ -158,39 +154,18 @@ function secondSlider_Handler(){
 		//change source if need to: 'videoJson.audio[bestMatch].sound' and seek: 'calcSeek'
 		//auto play, and at the end do the seek:
 		
-		//init
-		// starttimeMS=0;
-		// endtimeMS=0;
-		//totaltimeMS=0;
-		resttimeMS=0;
-		
-		isSeek=true;
 		audio_timeCounter = bestMatch;
 		
 		// Play
-		$("#audioSrc").attr("src", videoJson.audio[audio_timeCounter].sound);
-		var video = document.getElementById("media-video");
-		video.load();
-		video.play();
-		video.currentTime=calcSeek;
-		
-		
-		
-		// Start intervals again
-//		interval = setInterval(doEverySecond , 1000);
-		
-		// change shared values
-		//audio_timeCounter = bestMatch;
+		playAudio_withSeek(calcSeek);
 	});
 }
 
 // NOT-WORKING as a function
-function playAudio(timeToSeek){
-	console.log("--start -playAudio()");
+function playAudio_withSeek(timeToSeek){
 	$("#audioSrc").attr("src", videoJson.audio[audio_timeCounter].sound);
-	var video = document.getElementById("media-video");
-	//video.load();
-	video.currentTime=timeToSeek;
+	var video = $("#media-video")[0];
+	video.load();
 	video.play();
-	console.log("-- -playAudio()");
+	video.currentTime=timeToSeek;
 }

@@ -39,12 +39,11 @@
 		},
 
 		"6": {
-		"photo": "http://ofir.eu5.org/lecturus/photo001.jpg",
+			"photo": "http://ofir.eu5.org/lecturus/photo001.jpg",
 			"text": "this is subtitles 6"
 		},
 
 		"7": {
-
 			"text": "this is subtitles 7"
 		},
 
@@ -70,31 +69,25 @@
 		},
 
 		"13": {
-			"text": "this is subtitles 13"
+			"text": "this is subtitles 13 for some time"
 		},
 
 		"14": {
-			"text": "this is subtitles 14"
 		},
 
 		"15": {
-			"text": "this is subtitles 15"
 		},
 
 		"16": {
-			"text": "this is subtitles 16"
 		},
 
 		"17": {
-			"text": "this is subtitles 17"
 		},
 
 		"18": {
-			"text": "this is subtitles 18"
 		},
 
 		"19": {
-			"text": "this is subtitles 19"
 		},
 
 		"20": {
