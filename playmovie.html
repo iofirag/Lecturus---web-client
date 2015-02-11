@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<!-- jquery -->
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<!-- lecturus js - sound Handler -->
+		<script src="includes/js/playmovie.js"></script>
+		<link rel="stylesheet" href="includes/css/main.css">
+		<title>Show movie</title>
+	</head>
+	<body>
+		<section id="viewer">
+			<!-- Titles -->
+			<h1 id="title"></h1>
+			
+			<!-- Video 320*240 def -->
+			<video id="video" width="666" height="500" controls poster="">
+				<source id="audioSrc" src="" type="audio/mpeg">
+				Your browser does not support the video tag.
+			</video><br>
+			
+			<!-- Sub-titles -->
+			<h2 id="subtitle"></h2>
+			<input class="slider" type="range" name="seconds" id="secondsSlider" value="0" min="0" max="">
+		</section>
+	</body>
+</html>
