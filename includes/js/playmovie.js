@@ -51,7 +51,10 @@ $(document).ready(function() {
 	video.oncanplaythrough  = function() {
 		console.log("oncanplaythrough");
 		if (seek){
-			var found=false;
+			//init layout
+			$("#subtitle").html("");
+			$("#media-video").attr("poster", 'includes/media/default_poster.png');
+			
 			// Show the last pic (optional the text too if exist)
 			for (i=$("#secondSlider").val(); i>=0; i--){
 				if (videoJson.elements.hasOwnProperty(i+'')){
@@ -60,12 +63,10 @@ $(document).ready(function() {
 						if (videoJson.elements[i].hasOwnProperty('text')){
 							$("#subtitle").html(videoJson.elements[i].text);
 						}
-						found = true;
 						break;
 					}
 				}
 			}
-			if (found==false) $("#media-video").attr("poster", 'includes/media/default_poster.png');
 			seek=false;
 		}
 	};
@@ -116,6 +117,7 @@ $(document).ready(function() {
 	secondSlider_Handler();
 }); 
 
+
 function doEverySecond() {
 	//update slider
 	video_timeCounter = parseInt($("#secondSlider").val())+1;
@@ -123,6 +125,15 @@ function doEverySecond() {
 	$("#secondSlider").val( video_timeCounter );
 	$('#showtime').html(video_timeCounter);
 	
+	// Update input-range fill before and after thumb
+	var val = (video_timeCounter - $("#secondSlider").attr('min')) / ($("#secondSlider").attr('max') - $("#secondSlider").attr('min'));
+	$("#secondSlider").css('background-image',
+		                '-webkit-gradient(linear, left top, right top, '
+		                + 'color-stop(' + val + ', #94A14E), '
+		                + 'color-stop(' + val + ', #C5C5C5)'
+		                + ')'
+	);
+		                
 	// Check if there is element with 'video_timeCounter' key
 	if (videoJson.elements.hasOwnProperty(video_timeCounter+'')){
 		$.each(videoJson.elements[video_timeCounter], function(key, val) {
@@ -139,16 +150,10 @@ function doEverySecond() {
 }
 
 function secondSlider_Handler(){
-	// Slider triggerd by code
-	$("#secondSlider").on("input change",function() {
-		secondSlider = this.valueAsNumber;
-		$('#showtime').html(secondSlider);
-		
-		console.log(secondSlider);
-	});
-	
 	// If seek - seek the sound too
-	$("#secondSlider").change(function() {
+	$("#secondSlider").on("input change",function() {	
+	
+	// $("#secondSlider").change(function() {
 		seek=true;
 		secondSlider = this.valueAsNumber;
 		$('#showtime').html(secondSlider);
