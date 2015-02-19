@@ -5,24 +5,39 @@
 		<!-- jquery -->
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<!-- lecturus js - sound Handler -->
+		<link href='includes/css/media-player.css' rel='stylesheet' />
+		<script src='includes/js/media-player.js'></script>
 		<script src="includes/js/playmovie.js"></script>
 		<link rel="stylesheet" href="includes/css/main.css">
+		<link rel="stylesheet" href="includes/css/input_range.css">
 		<title>Show movie</title>
 	</head>
 	<body>
-		<section id="viewer">
+		<section id="media-player">
 			<!-- Titles -->
 			<h1 id="title"></h1>
-			
+
 			<!-- Video 320*240 def -->
-			<video id="video" width="666" height="500" controls poster="">
+			<video id="media-video" width="585" height="450" controls poster="includes/media/default_poster.png">
 				<source id="audioSrc" src="" type="audio/mpeg">
 				Your browser does not support the video tag.
-			</video><br>
-			
+			</video>
+			<div id='media-controls'>
+				<!-- <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress> -->
+				<button id='replay-button' class='replay' title='replay' onclick='replayMedia();'>Replay</button>	
+				<button id='play-pause-button' class='play' title='play' onclick='togglePlayPause();'>Play</button>
+				<button id='stop-button' class='stop' title='stop' onclick='stopPlayer();'>Stop</button>
+				<button id='volume-inc-button' class='volume-plus' title='increase volume' onclick='changeVolume("+");'>Increase volume</button>
+				<button id='volume-dec-button' class='volume-minus' title='decrease volume' onclick='changeVolume("-");'>Decrease volume</button>
+				<button id='mute-button' class='mute' title='mute' onclick='toggleMute("true");'>Mute</button>	
+			</div>
+
 			<!-- Sub-titles -->
 			<h2 id="subtitle"></h2>
-			<input class="slider" type="range" name="seconds" id="secondsSlider" value="0" min="0" max="">
+
+			<!-- Slider -->
+			<input class="slider" type="range" id="secondSlider" value="0" min="0" max="0" >
+			<span id="showtime">0</span>
 		</section>
 	</body>
 </html>
