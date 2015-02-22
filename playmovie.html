@@ -6,13 +6,21 @@
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<!-- lecturus js - sound Handler -->
 		<link href='includes/css/media-player.css' rel='stylesheet' />
+		<script src='includes/js/playerMovie.js'></script>
 		<script src='includes/js/media-player.js'></script>
 		<script src="includes/js/playmovie.js"></script>
 		<link rel="stylesheet" href="includes/css/main.css">
 		<link rel="stylesheet" href="includes/css/input_range.css">
 		<title>Show movie</title>
 	</head>
-	<body>
+	<body id="playerBody">
+		<nav id="profileTopNav">
+			<section class="profilePicture"></section>
+			<section id="userName"></section>
+			<section id="otherOptions"></section>
+			<div class="clear"></div>
+		</nav>
+		
 		<section id="media-player">
 			<!-- Titles -->
 			<h1 id="title"></h1>
