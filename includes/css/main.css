@@ -141,4 +141,7 @@ header, footer, nav, main, section, article, aside {
 margin: 0 auto;
 }
 
-
+#titleNav{
+	text-align: center;
+	font-size: 25px;
+}
