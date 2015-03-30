@@ -1,36 +1,58 @@
+// Json get in ajax
 var videoJson;
 
+// Sound ref
+var mediaSound;
+
+// Whole video second counter
 var video_timeCounter = 0;
-//whole video
+
+// Specific audio playing
 var audio_timeCounter = 0;
-//specific audio playing
 
-var interval;
-
-//stopwatch
+// Stopwatch for interval
 var starttimeMS;
 var endtimeMS;
 var totaltimeMS = 0;
 var resttimeMS = 0;
+var interval;
 
+// Flags to handle play/pause auto in seeking & self-finish
 var seek = false;
+var currentEnd_loadSecond = false;
+
+// Player buttons
+var playPauseBtn;
+var muteBtn;
+
+// Song contains the second user seek to
+var bestMatch;
+
+//var pixelsToSec;
+
 $(document).ready(function() {
-console.log("this is it");
+	console.log("ready");
+	
+	mediaSound = $('#mediaSound')[0];
+	
 	/* download video json from lecturus web-service */
+	var videoId = "";
+	if (getParameterByName("videoId")!=''){
+		videoId = getParameterByName("videoId");
+	}
 	$.ajax({
 		type : "GET",
-		url : 'http://lecturus.herokuapp.com/session/getVideoId/',
+		url :  'http://lecturus.herokuapp.com/session/getVideoById/?videoId='+videoId, //'includes/js/video.json', //
 		async : false,
 		dataType : 'json',
-		data : {
-			videoId : "temp"
-		},
 		success : function(data) {
 			// Build video obj
 			videoJson = data;
 
 			// set the title
-			$("#title").html(videoJson.title);
+			$("#degreeName").html(videoJson.degree);
+			$('#courseName').html('&nbsp;> ' + videoJson.course);
+			$('#videoTitle').html('&nbsp;> ' + videoJson.title);
 
 			//put the first audio
 			$("#audioSrc").attr("src", videoJson.audio[audio_timeCounter].sound);
@@ -40,70 +62,209 @@ console.log("this is it");
 				'min' : 0,
 				'max' : videoJson.totalSecondLength
 			});
-			$("#progress-bar").prop({
-				'min' : 0,
-				'max' : videoJson.totalSecondLength
-			});
 		},
 		error : function(objRequest, errortype) {
 			console.log(errortype);
 			console.log("Can't do because: " + error);
 		}
 	});
+	secondSlider_Handler();
+	
+	initializeTopNav();
+	
+	show_edit_button_if_admin();
+});
+document.addEventListener("DOMContentLoaded", function() { initialiseMediaPlayer(); }, false);
 
-	var video = document.getElementById("media-video");
-	video.oncanplaythrough = function() {
-		console.log("oncanplaythrough");
-		if (seek) {
-			//init layout
-			$("#subtitle").html("");
-			$("#media-video").attr("poster", 'includes/media/default_poster.png');
+function doEverySecond() {
+	//update slider
+	video_timeCounter = parseInt($("#secondSlider").val()) + 1;
+	console.log(video_timeCounter);
+	$("#secondSlider").val(video_timeCounter);
+	$('#showtime').html( secondToTime(video_timeCounter) );
 
-			// Show the last pic (optional the text too if exist)
-			for ( i = $("#secondSlider").val(); i >= 0; i--) {
-				if (videoJson.elements.hasOwnProperty(i + '')) {
-					if (videoJson.elements[i].hasOwnProperty('photo')) {
-						$("#media-video").attr("poster", videoJson.elements[i].photo);
-						if (videoJson.elements[i].hasOwnProperty('text')) {
-							$("#subtitle").html(videoJson.elements[i].text);
-						}
-						break;
-					}
-				}
+	// Update input-range fill before and after thumb
+	var val = (video_timeCounter - $("#secondSlider").attr('min')) / ($("#secondSlider").attr('max') - $("#secondSlider").attr('min'));
+	changeProgressColor(val);
+
+	// Check if there is element with 'video_timeCounter' key
+	if (videoJson.elements.hasOwnProperty(video_timeCounter + '')) {
+		$.each(videoJson.elements[video_timeCounter], function(key, val) {
+			switch (key) {
+			case "photo":
+				console.log("find in key: "+key+" "+videoJson.elements[video_timeCounter].photo.url);
+				$('#viewPhotos').attr("src" ,videoJson.elements[video_timeCounter].photo.url);
+				break;
+			case "tag":
+				$("#viewerTag").html(videoJson.elements[video_timeCounter].tag.text);
+				break;
 			}
-			seek = false;
+		});
+	}
+}
+function secondToTime(second){
+	var sec_num = parseInt(second, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+	
+	var hoursFlag = false;
+	var hoursNeedZero = false;
+	
+	// hours
+    if (hours   < 10) {
+    	if (hours >= 1){
+    		hoursFlag = true;
+    		//hours   = hours; //use the hours as is
+    	}
+    }
+    
+    // minutes
+    if (minutes < 10) {
+    	if (minutes >=1){
+    		if (hoursFlag) minutes = "0"+minutes;
+    		//else //minutes   = minutes; //use the minutes as is
+    	}
+    }
+    
+    //if minutes<10 && minutes>0 && hoursFlag minutes = '0'+minutes
+    //find just the 0X situations, else use the obj as is
+    if (seconds < 10) {seconds = "0"+seconds;}
+
+    var time;    
+    if ( parseInt(hours) <=0 )	time = minutes+':'+seconds;
+	if ( parseInt(minutes) <=0 ) time = "0"+':'+seconds;
+	else 						time = hours+':'+minutes+':'+seconds;
+   
+    return time;
+}
+function secondSlider_Handler() {
+	$("#secondSlider").on("input", function() {
+		// get value as sliding - use for show brief images & find witch sound to use
+													console.log("input");
+		
+		//debugger;
+		//pause video
+		mediaSound.pause();
+		//debugger;
+		//show second to user
+		secondSlider = this.value;
+		//changeProgressColor(secondSlider);
+		$('#showtime').html( secondToTime(secondSlider));
+													console.log("seek to: " + secondSlider);
+		
+		// find witch sound contain the second user seek
+		$.each(videoJson.audio, function(audioObj) {
+			if ((secondSlider >= videoJson.audio[audioObj].startSecond) && (secondSlider <= videoJson.audio[audioObj].startSecond + videoJson.audio[audioObj].length)) {
+				bestMatch = audioObj;
+			}
+		});
+		
+		//get the sound in this second-val + seconds_to_forward
+		calcSeek = (secondSlider - videoJson.audio[bestMatch].startSecond);
+		soundContain = videoJson.audio[bestMatch].sound;
+													console.log("This second located in: " + soundContain);
+													console.log("Need to seek from start: " + calcSeek);
+		
+		// find if in this second there is something to show
+		findView();
+	});
+	
+	$("#secondSlider").on("change", function() {
+		// play the fuckaaaa sound (and run the interval)
+													console.log("change");		
+		//debugger;							
+		if (audio_timeCounter == bestMatch){
+			//seek in the same song
+			//do the seek & auto play
+			playAudio_withSeek(calcSeek, false);
+		}else{
+			//seek to another song
+			//load & prepare sound
+			//change source to: 'videoJson.audio[bestMatch].sound' and seek: 'calcSeek'
+			//do the seek & auto play
+			audio_timeCounter = bestMatch;
+			playAudio_withSeek(calcSeek, true);
+		}
+	});
+}
+
+function playAudio_withSeek(timeToSeek, seekAnotherSong) {
+	if (seekAnotherSong){
+		//seek to another sound
+														console.log("seek to other song");
+		$("#audioSrc").attr("src", videoJson.audio[audio_timeCounter].sound);
+		seek = true;
+		mediaSound.load();
+	}else{
+		//seek in the same sound
+														console.log("seek in the song");
+		mediaSound.play();
+	}
+	mediaSound.currentTime = timeToSeek;
+}
+
+
+
+
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+/**************************************************************************************************/
+
+// Media Player using HTML5's Media API
+
+function initialiseMediaPlayer() {
+	console.log("initialiseMediaPlayer");
+	
+	// Get handles to each of the buttons and required elements
+	playPauseBtn = document.getElementById('play-pause-button');
+	muteBtn = document.getElementById('mute-button');
+
+	// Hide the browser's default controls
+	mediaSound.controls = false;
+	
+	mediaSound.oncanplaythrough = function() {
+		console.log("oncanplaythrough");
+		if (seek || currentEnd_loadSecond) {
+															console.log("seek || currentEnd_loadSecond");
+			seek=false;
+			currentEnd_loadSecond=false;
+			mediaSound.play();
 		}
 	};
-	video.onplay = function() {
-		console.log("onPlay");
+	mediaSound.onplay = function() {						console.log("my onPlay");
+		showOp();
+		changeButtonType(playPauseBtn, 'pause');
 		starttimeMS = new Date();
 
 		if (resttimeMS < 1000 && resttimeMS > 0) {
-			console.log("wait: " + resttimeMS);
+															console.log("wait: " + resttimeMS);
 			setTimeout(doEverySecond, resttimeMS);
 		}
 		if (interval == null) {
 			interval = setInterval(doEverySecond, 1000);
 		}
 	};
-	video.onpause = function() {
-		console.log("onPause");
+	mediaSound.onpause = function() {											console.log("my onPause");
+		showOp();
+		changeButtonType(playPauseBtn, 'play');
 		clearInterval(interval);
 		interval = null;
 		endtimeMS = new Date();
 		totaltimeMS = endtimeMS - starttimeMS;
 		resttimeMS = 1000 - ((endtimeMS - starttimeMS) % 1000);
 	};
-	video.onended = function() {
+	mediaSound.onended = function() {
 		console.log("onended");
-		//if (onpause && onended){
 		audio_timeCounter++;
 
 		// If thare are more videos
 		if (audio_timeCounter < videoJson.audio.length) {
 
 			// Change audio-source & Load func & Play func
-			playAudio_withSeek(0);
+			playAudio_withSeek(0, true);
+			currentEnd_loadSecond = true;
 		} else {
 			// video has finished, init param:
 			clearInterval(interval);
@@ -112,81 +273,238 @@ console.log("this is it");
 			video_timeCounter = 0;
 			console.log("video finish");
 		}
-		//}
 	};
-	video.onerror = function() {
-		console.log("onerror");
+	mediaSound.onerror = function(e) {
+		debugger;
+		console.log('Error loading: '+e.target.src);
 		alert("Error! Something went wrong");
 		alert("Cannot play video because load failed.");
+		//mediaSound.pause();
 	};
+	mediaSound.onvolumechange = function(){
+		console.log("volumechange");
+		// Update the button to be mute/unmute
+		if (mediaSound.muted) changeButtonType(muteBtn, 'unmute');
+		else changeButtonType(muteBtn, 'mute');
+	};
+}
 
-	secondSlider_Handler();
-});
+function findView(){
+	console.log("findView");
+	//init layout
+	$("#subtitle").html("");
 
-function doEverySecond() {
-	//update slider
-	video_timeCounter = parseInt($("#secondSlider").val()) + 1;
-	console.log(video_timeCounter);
-	$("#secondSlider").val(video_timeCounter);
-	$('#showtime').html(video_timeCounter);
-
-	// Update input-range fill before and after thumb
-	var val = (video_timeCounter - $("#secondSlider").attr('min')) / ($("#secondSlider").attr('max') - $("#secondSlider").attr('min'));
-	$("#secondSlider").css('background-image', '-webkit-gradient(linear, left top, right top, ' + 'color-stop(' + val + ', #94A14E), ' + 'color-stop(' + val + ', #C5C5C5)' + ')');
-
-	// Check if there is element with 'video_timeCounter' key
-	if (videoJson.elements.hasOwnProperty(video_timeCounter + '')) {
-		$.each(videoJson.elements[video_timeCounter], function(key, val) {
-			switch (key) {
-			case "photo":
-				$("#media-video").attr("poster", videoJson.elements[video_timeCounter].photo);
-				break;
-			case "text":
-				$("#subtitle").html(videoJson.elements[video_timeCounter].text);
+	var wasPic = false;
+	// Show the last pic (optional the text too if exist)
+	for ( i = $("#secondSlider").val(); i >= 0; i--) {
+		if (videoJson.elements.hasOwnProperty(i + '')) {
+			if (videoJson.elements[i].hasOwnProperty('photo')) {
+				$('#viewPhotos').attr("src" ,videoJson.elements[i].photo.url);
+				wasPic = true;
+				console.log("need to show image:"+ $('#viewPhotos').attr("src") );
+				if (videoJson.elements[i].hasOwnProperty('tag')) {
+					$("#viewerTag").html(videoJson.elements[i].tag.text);
+				}
 				break;
 			}
-		});
+			else if (videoJson.elements[i].hasOwnProperty('tag')) {
+				$("#viewerTag").html(videoJson.elements[i].tag.text);
+				if (videoJson.elements[i].hasOwnProperty('photo')) {
+					$('#viewPhotos').attr("src" ,videoJson.elements[i].photo.url);
+					wasPic = true;
+				}
+				break;
+			}
+		}
+	}
+	if (!wasPic) $('#viewPhotos').attr("src", 'includes/media/default_poster.png');
+}
+
+function togglePlayPause() {
+	// If the mediaSound is currently paused or has ended
+	if (mediaSound.paused || mediaSound.ended) {
+		// Change the button to be a pause button
+		changeButtonType(playPauseBtn, 'pause');
+		// Play the media
+		mediaSound.play();
+	}
+	// Otherwise it must currently be playing
+	else {
+		// Change the button to be a play button
+		changeButtonType(playPauseBtn, 'play');
+		// Pause the media
+		mediaSound.pause();
 	}
 }
 
-function secondSlider_Handler() {
-	// If seek - seek the sound too
-	$("#secondSlider").on("input change", function() {
-
-		// $("#secondSlider").change(function() {
-		seek = true;
-		secondSlider = this.valueAsNumber;
-		$('#showtime').html(secondSlider);
-		console.log("seek to: " + secondSlider);
-
-		// find witch video contain the second user seek
-		var bestMatch;
-		$.each(videoJson.audio, function(i) {
-			if ((secondSlider >= videoJson.audio[i].startSecond) && (secondSlider <= videoJson.audio[i].startSecond + videoJson.audio[i].length)) {
-				bestMatch = i;
-			}
-		});
-		//get the sound in this second-val + seconds_to_forward
-		calcSeek = (secondSlider - videoJson.audio[bestMatch].startSecond);
-		soundContain = videoJson.audio[bestMatch].sound;
-		console.log("This second located in: " + soundContain);
-		console.log("Need to seek from start: " + calcSeek);
-
-		//load & prepare sound
-		//change source if need to: 'videoJson.audio[bestMatch].sound' and seek: 'calcSeek'
-		//auto play, and at the end do the seek:
-
-		audio_timeCounter = bestMatch;
-
-		// Play
-		playAudio_withSeek(calcSeek);
-	});
+// Stop the current media from playing, and return it to the start position
+function stopPlayer() {
+	mediaSound.pause();
+	mediaSound.currentTime = 0;
+	// Reset the progress bar to 0
+	$("#secondSlider").val(0);
+	$('#viewPhotos').attr("src" ,'includes/media/default_poster.png');
+	$("#subtitle").html("");
+	changeProgressColor(0);
 }
 
-function playAudio_withSeek(timeToSeek) {
-	$("#audioSrc").attr("src", videoJson.audio[audio_timeCounter].sound);
-	var video = $("#media-video")[0];
-	video.load();
-	video.play();
-	video.currentTime = timeToSeek;
+// Changes the volume on the media player
+function changeVolume(direction) {
+	if (direction === '+') mediaSound.volume += mediaSound.volume == 1 ? 0 : 0.1;
+	else mediaSound.volume -= (mediaSound.volume == 0 ? 0 : 0.1);
+	mediaSound.volume = parseFloat(mediaSound.volume).toFixed(1);
+}
+
+// Toggles the media player's mute and unmute status
+function toggleMute() {
+	if (mediaSound.muted) {
+		// Change the cutton to be a mute button
+		changeButtonType(muteBtn, 'mute');
+		// Unmute the media player
+		mediaSound.muted = false;
+	}
+	else {
+		// Change the button to be an unmute button
+		changeButtonType(muteBtn, 'unmute');
+		// Mute the media player
+		mediaSound.muted = true;
+	}
+}
+
+// Replays the media currently loaded in the player
+function replayMedia() {
+	resetPlayer();
+	mediaSound.play();
+}
+
+// Updates a button's title, innerHTML and CSS class to a certain value
+function changeButtonType(btn, value) {
+	btn.title = value;
+	btn.innerHTML = value;
+	btn.className = value;
+}
+
+// Loads a video item into the media player
+function loadVideo() {
+	for (var i = 0; i < arguments.length; i++) {
+		var file = arguments[i].split('.');
+		var ext = file[file.length - 1];
+		// Check if this media can be played
+		if (canPlayVideo(ext)) {
+			// Reset the player, change the source file and load it
+			resetPlayer();
+			mediaSound.src = arguments[i];
+			mediaSound.load();
+			break;
+		}
+	}
+}
+
+// Checks if the browser can play this particular type of file or not
+function canPlayVideo(ext) {
+	var ableToPlay = mediaSound.canPlayType('video/' + ext);
+	if (ableToPlay == '') return false;
+	else return true;
+}
+
+// Resets the media player
+function resetPlayer() {
+	// Reset the progress bar to 0
+	$("#secondSlider").val(0);
+	$('#viewPhotos').attr("src" ,'includes/media/default_poster.png');
+	$("#subtitle").html("");
+	changeProgressColor(0);
+		
+	// Move the media back to the start
+	mediaSound.currentTime = 0;
+	
+	// Ensure that the play pause button is set as 'play'
+	changeButtonType(playPauseBtn, 'pause');
+}
+function changeProgressColor(val){
+	$("#secondSlider").css('background-image', '-webkit-gradient(linear, left top, right top, ' + 'color-stop(' + val + ', #cc0000), ' + 'color-stop(' + val + ', #666666)' + ')');
+}
+
+/***********************************************************************************************/
+/***********************************************************************************************/
+/***********************************************************************************************/
+
+//Initialize the top nav with user's details
+function initializeTopNav() {
+	$('#userName').html(window.localStorage.getItem("userName"));
+	var url_img = window.localStorage.getItem("profilePicture");
+	if (url_img != null) $('.profilePicture').css('background-image', "url(" + url_img + ")");
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function showOp(){
+	//append img child for 'view' section
+	$('#viewOp').removeAttr("style");
+	$('#viewOp').css('position', 'absolute' );
+	$('#viewOp').css('left', $( document ).width()-$('#viewOp').width() );
+	$('#viewOp').css('top', '220px' );
+	
+	if (mediaSound.paused || mediaSound.ended) {
+			// Pause button
+			$('#viewOp').attr('src','includes/media/pauseCircle.png');
+		}
+		// Otherwise it must currently be playing
+		else {
+			// Play image
+			$('#viewOp').attr('src','includes/media/playCircle.png');
+		}
+	//$('#viewContainer').prepend("<img id='viewOp' >");
+	
+	var timesRun = 0;
+	var interval = setInterval(function(){
+	    timesRun += 1;
+	    if(timesRun === 1){
+	        clearInterval(interval);
+	        $('#viewOp').removeAttr('src');
+	        $('#viewOp').hide();
+	    }
+	    //do whatever here..
+	}, 700);
+}
+
+function secondToTime(second){
+	var sec_num = parseInt(second, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+	
+	if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+    
+	// remove zore priffix 
+    for (i=0; i<4; i++){
+    	if (time[0]=='0' || time[0]==':'){
+    		time = time.substring(1, time.length);
+    	}
+    }
+    return time;
+}
+
+function show_edit_button_if_admin(){
+	if (isAdmin()){
+		$('#admin_button_holder').html("<input type='button' value='edit' onclick='goto_editPage();'>");
+	}
+}
+
+function isAdmin(){
+	if (videoJson.uploadBy == window.localStorage.getItem("userEmail")){
+		return true;
+	}
+	return false;
+}
+function goto_editPage(){
+	window.location.href = "editVideo.html?videoId="+videoJson.videoId;
 }

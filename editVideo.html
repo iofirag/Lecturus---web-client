@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="jsoneditor/jsoneditor.min.css">
+		<script type="text/javascript" src="jsoneditor/jsoneditor.js"></script>
+		<script type="text/javascript" src="jsoneditor/jsoneditor2.js"></script>
+		<script src="Best Online JSON Viewer, Editor, Analyser, Beautifier Formatter, Validator, Minifier, Converter,Json Viewer with Image_files/jquery.zclip.js"></script>
+		<link rel="stylesheet" type="text/css" href="tooltipster/css/tooltipster.css" />
+	    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.0.min.js"></script>
+	    <script type="text/javascript" src="tooltipster/js/jquery.tooltipster.min.js"></script>
+		<!-- <script data-cfasync="true" src="http://codebeautify.org/js/jquery.tooltipster.js" type="text/javascript"></script> -->
+	</head>
+	<body>
+		<div id="jsoneditor" style="width: 400px; height: 400px;"></div>
+
+
+		<!--<div class="tooltipster-base tooltipster-default tooltipster-fade tooltipster-fade-show" style="-webkit-animation-duration: 350ms; transition-duration: 350ms; -webkit-transition-duration: 350ms; width: 221px; padding-left: 0px; padding-right: 0px; top: 194px; left: 733px;">
+			<div class="tooltipster-content"><img style="width:200px !important;height:200px !important;" src="http://ofir.eu5.org/lecturus/photo002.jpg">
+			</div>
+			<div class="tooltipster-arrow-left tooltipster-arrow" style="">
+				<span class="tooltipster-arrow-border" style="margin-right: -3px; border-color: rgb(0, 0, 0);;"></span><span style="border-color:rgb(76, 76, 76);"></span>
+			</div>
+		</div>-->
+		
+		
+		<script type="text/javascript" >
+			// create the editor
+			var container = document.getElementById("jsoneditor");
+			var editor = new JSONEditor(container);
+
+			// set json
+			var json = {
+				"Array" : [1, 2, 3],
+				"Boolean" : true,
+				"Null" : null,
+				"Number" : 123,
+				"Object" : {
+					"a" : "b",
+					"c" : "d"
+				},
+				"String" : "Hello World"
+			};
+
+			/* download video json from lecturus web-service */
+			$.ajax({
+				type : "GET",
+				url : 'http://lecturus.herokuapp.com/session/getVideoId/',
+				async : false,
+				dataType : 'json',
+				data : {
+					videoId : "temp"
+				},
+				success : function(data) {
+					// Build video obj
+					json = data;
+				},
+				error : function(objRequest, errortype) {
+					console.log(errortype);
+					console.log("Can't do because: " + error);
+				}
+			});
+
+			editor.set(json);
+
+			// get json
+			var json = editor.get();
+		</script>
+	</body>
+</html>
