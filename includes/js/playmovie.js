@@ -59,7 +59,11 @@ $(document).ready(function() {
 				$("#degreeName").html(videoJson.degree);
 				$('#courseName').html('&nbsp;> ' + videoJson.course);
 				$('#videoTitle').html('&nbsp;> ' + videoJson.title);
-	
+				
+				// Votes
+				$('#voteDown_val').html(videoJson.rating.negative.value);
+				$('#voteUp_val').text(videoJson.rating.positive.value);
+				
 				//put the first audio
 				$("#audioSrc").attr("src", videoJson.audios[audio_timeCounter].url);
 				mediaSound.load();
