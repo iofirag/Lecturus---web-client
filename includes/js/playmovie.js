@@ -40,28 +40,36 @@ $(document).ready(function() {
 	if (getParameterByName("videoId")!=''){
 		videoId = getParameterByName("videoId");
 	}
+	
+	//$.QueryString('videoId');
+	
+	// /*Static*/videoId = '123';
 	$.ajax({
 		type : "GET",
 		url :  'http://lecturus.herokuapp.com/session/getVideoById/?videoId='+videoId, //'includes/js/video.json', //
 		async : false,
 		dataType : 'json',
 		success : function(data) {
-			// Build video obj
-			videoJson = data;
-
-			// set the title
-			$("#degreeName").html(videoJson.degree);
-			$('#courseName').html('&nbsp;> ' + videoJson.course);
-			$('#videoTitle').html('&nbsp;> ' + videoJson.title);
-
-			//put the first audio
-			$("#audioSrc").attr("src", videoJson.audio[audio_timeCounter].sound);
-
-			//adjust slider for full video length
-			$("#secondSlider").prop({
-				'min' : 0,
-				'max' : videoJson.totalSecondLength
-			});
+			
+			if (data.status==1){
+				// Build video obj
+				videoJson = data.info;
+				
+				// set the title
+				$("#degreeName").html(videoJson.degree);
+				$('#courseName').html('&nbsp;> ' + videoJson.course);
+				$('#videoTitle').html('&nbsp;> ' + videoJson.title);
+	
+				//put the first audio
+				$("#audioSrc").attr("src", videoJson.audios[audio_timeCounter].url);
+				mediaSound.load();
+				
+				//adjust slider for full video length
+				$("#secondSlider").prop({
+					'min' : 0,
+					'max' : videoJson.totalSecondLength
+				});
+			}
 		},
 		error : function(objRequest, errortype) {
 			console.log(errortype);
@@ -95,8 +103,13 @@ function doEverySecond() {
 				console.log("find in key: "+key+" "+videoJson.elements[video_timeCounter].photo.url);
 				$('#viewPhotos').attr("src" ,videoJson.elements[video_timeCounter].photo.url);
 				break;
-			case "tag":
-				$("#viewerTag").html(videoJson.elements[video_timeCounter].tag.text);
+			case "tags":
+				$("#viewerTag").empty();
+				$.each( videoJson.elements[video_timeCounter].tags, function(index, val){
+					var finalText = '<section>'+val.text+'</section>';
+					$("#viewerTag").append(finalText);
+				});
+				
 				break;
 			}
 		});
@@ -143,7 +156,6 @@ function secondSlider_Handler() {
 		// get value as sliding - use for show brief images & find witch sound to use
 													console.log("input");
 		
-		//debugger;
 		//pause video
 		mediaSound.pause();
 		//debugger;
@@ -154,15 +166,15 @@ function secondSlider_Handler() {
 													console.log("seek to: " + secondSlider);
 		
 		// find witch sound contain the second user seek
-		$.each(videoJson.audio, function(audioObj) {
-			if ((secondSlider >= videoJson.audio[audioObj].startSecond) && (secondSlider <= videoJson.audio[audioObj].startSecond + videoJson.audio[audioObj].length)) {
+		$.each(videoJson.audios, function(audioObj) {
+			if ((secondSlider >= videoJson.audios[audioObj].startAt) && (secondSlider <= videoJson.audios[audioObj].startAt + videoJson.audios[audioObj].length)) {
 				bestMatch = audioObj;
 			}
 		});
 		
 		//get the sound in this second-val + seconds_to_forward
-		calcSeek = (secondSlider - videoJson.audio[bestMatch].startSecond);
-		soundContain = videoJson.audio[bestMatch].sound;
+		calcSeek = (secondSlider - videoJson.audios[bestMatch].startAt);
+		soundContain = videoJson.audios[bestMatch].url;
 													console.log("This second located in: " + soundContain);
 													console.log("Need to seek from start: " + calcSeek);
 		
@@ -181,7 +193,7 @@ function secondSlider_Handler() {
 		}else{
 			//seek to another song
 			//load & prepare sound
-			//change source to: 'videoJson.audio[bestMatch].sound' and seek: 'calcSeek'
+			//change source to: 'videoJson.audios[bestMatch].sound' and seek: 'calcSeek'
 			//do the seek & auto play
 			audio_timeCounter = bestMatch;
 			playAudio_withSeek(calcSeek, true);
@@ -193,7 +205,7 @@ function playAudio_withSeek(timeToSeek, seekAnotherSong) {
 	if (seekAnotherSong){
 		//seek to another sound
 														console.log("seek to other song");
-		$("#audioSrc").attr("src", videoJson.audio[audio_timeCounter].sound);
+		$("#audioSrc").attr("src", videoJson.audios[audio_timeCounter].url);
 		seek = true;
 		mediaSound.load();
 	}else{
@@ -260,7 +272,7 @@ function initialiseMediaPlayer() {
 		audio_timeCounter++;
 
 		// If thare are more videos
-		if (audio_timeCounter < videoJson.audio.length) {
+		if (audio_timeCounter < videoJson.audios.length) {
 
 			// Change audio-source & Load func & Play func
 			playAudio_withSeek(0, true);
@@ -275,7 +287,6 @@ function initialiseMediaPlayer() {
 		}
 	};
 	mediaSound.onerror = function(e) {
-		debugger;
 		console.log('Error loading: '+e.target.src);
 		alert("Error! Something went wrong");
 		alert("Cannot play video because load failed.");
@@ -292,7 +303,7 @@ function initialiseMediaPlayer() {
 function findView(){
 	console.log("findView");
 	//init layout
-	$("#subtitle").html("");
+	$("#viewerTag").empty();
 
 	var wasPic = false;
 	// Show the last pic (optional the text too if exist)
@@ -301,18 +312,29 @@ function findView(){
 			if (videoJson.elements[i].hasOwnProperty('photo')) {
 				$('#viewPhotos').attr("src" ,videoJson.elements[i].photo.url);
 				wasPic = true;
-				console.log("need to show image:"+ $('#viewPhotos').attr("src") );
-				if (videoJson.elements[i].hasOwnProperty('tag')) {
-					$("#viewerTag").html(videoJson.elements[i].tag.text);
+												console.log("need to show image:"+ $('#viewPhotos').attr("src") );
+				if (videoJson.elements[i].hasOwnProperty('tags')) {
+					$("#viewerTag").empty();
+					$.each( videoJson.elements[i].tags, function(index, val){
+						//debugger;
+						var finalText = '<section>'+val.text+'</section>';
+						$("#viewerTag").append(finalText);
+					});
 				}
 				break;
 			}
-			else if (videoJson.elements[i].hasOwnProperty('tag')) {
-				$("#viewerTag").html(videoJson.elements[i].tag.text);
-				if (videoJson.elements[i].hasOwnProperty('photo')) {
-					$('#viewPhotos').attr("src" ,videoJson.elements[i].photo.url);
+			else if (videoJson.elements[i].hasOwnProperty('tags')) {
+				$("#viewerTag").empty();
+				$.each( videoJson.elements[i].tags, function(index, val){
+					//debugger;
+					var finalText = '<section>'+val.text+'</section>';
+					$("#viewerTag").append(finalText);
+				});
+				//console.log('text in sec '+i+' is: '+videoJson.elements[i].tags.text);
+				// if (videoJson.elements[i].hasOwnProperty('photo')) {
+					// $('#viewPhotos').attr("src" ,videoJson.elements[i].photo.url);
 					wasPic = true;
-				}
+				// }
 				break;
 			}
 		}
@@ -344,7 +366,7 @@ function stopPlayer() {
 	// Reset the progress bar to 0
 	$("#secondSlider").val(0);
 	$('#viewPhotos').attr("src" ,'includes/media/default_poster.png');
-	$("#subtitle").html("");
+	$("#viewerTag").empty();
 	changeProgressColor(0);
 }
 
@@ -412,7 +434,7 @@ function resetPlayer() {
 	// Reset the progress bar to 0
 	$("#secondSlider").val(0);
 	$('#viewPhotos').attr("src" ,'includes/media/default_poster.png');
-	$("#subtitle").html("");
+	$("#viewerTag").empty();
 	changeProgressColor(0);
 		
 	// Move the media back to the start
@@ -500,7 +522,7 @@ function show_edit_button_if_admin(){
 }
 
 function isAdmin(){
-	if (videoJson.uploadBy == window.localStorage.getItem("userEmail")){
+	if (videoJson.owner == window.localStorage.getItem("userEmail")){
 		return true;
 	}
 	return false;

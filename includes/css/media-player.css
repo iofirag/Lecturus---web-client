@@ -39,6 +39,9 @@ h1 {
 	width: 640px;
 	height: 360px;
 }
+#viewContainer{
+	background-color: black;
+}
 #viewOp{
 	position: absolute;
 	/*width: 100%;*/
@@ -46,17 +49,21 @@ h1 {
 }
 #viewPhotos{
 	background-image: url('../media/default_poster.png');
-	width: 100%;
+	/*width: 100%;*/
+}
+#viewPhotos_darkBackground{
+	background-color: black;
 }
 #viewerBottom{
-	
+	  position: relative;
+  bottom: 4px;
 }
 #voteContainerLine{
 	height: 20px;
 }
 #viewerDescription{
-	position: relative;
-	bottom:4px;
+	/*position: relative;
+	bottom:4px;*/
 	/*height: 20px;*/
 	background-color: #cccccc;
 }
@@ -96,15 +103,15 @@ h1 {
 
 #slider{
 	background-color: #333333;
-	position: relative;
-  	bottom: 4px;
+	/*position: relative;
+  	bottom: 4px;*/
   	/*width: 100%;*/
 }
 #secondSlider {
 	width: 100%;
 }
 #showtime{
-	display: inherit;
+	/*display: inherit;*/
 }
 /*video {
 	border:1px solid #2e52a4;
