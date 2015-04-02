@@ -1,9 +1,0 @@
-+reset
-	+initiate poster when user stop the video
-	+remove last tag text
-
-+pause in click the poster
-+pause the thumb when click on input range, for preparing the sound
-+click on the video for pause/play it
-
-calibrate proccess bar

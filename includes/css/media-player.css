@@ -58,6 +58,9 @@ h1 {
 	  position: relative;
   bottom: 4px;
 }
+.splitter{
+	width:95%;
+}
 #voteContainerLine{
 	height: 20px;
 }

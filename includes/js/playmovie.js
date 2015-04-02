@@ -31,8 +31,10 @@ var bestMatch;
 //var pixelsToSec;
 
 $(document).ready(function() {
-	console.log("ready");
+	// init the top page
+	initializeTopNav();
 	
+	// init media obj
 	mediaSound = $('#mediaSound')[0];
 	
 	/* download video json from lecturus web-service */
@@ -56,8 +58,8 @@ $(document).ready(function() {
 				videoJson = data.info;
 				
 				// set the title
-				$("#degreeName").html(videoJson.degree);
-				$('#courseName').html('&nbsp;> ' + videoJson.course);
+				$("#degreeName").html( get_name_from_degreeNum(videoJson.degree) );
+				$('#courseName').html('&nbsp;> ' + get_name_from_courseNum(videoJson.course) );
 				$('#videoTitle').html('&nbsp;> ' + videoJson.title);
 				
 				// Votes
@@ -73,6 +75,12 @@ $(document).ready(function() {
 					'min' : 0,
 					'max' : videoJson.totalSecondLength
 				});
+				
+				// slider events handler
+				secondSlider_Handler();
+				
+				// Check if admin
+				show_edit_button_if_admin();
 			}
 		},
 		error : function(objRequest, errortype) {
@@ -80,11 +88,6 @@ $(document).ready(function() {
 			console.log("Can't do because: " + error);
 		}
 	});
-	secondSlider_Handler();
-	
-	initializeTopNav();
-	
-	show_edit_button_if_admin();
 });
 document.addEventListener("DOMContentLoaded", function() { initialiseMediaPlayer(); }, false);
 
@@ -455,20 +458,6 @@ function changeProgressColor(val){
 /***********************************************************************************************/
 /***********************************************************************************************/
 
-//Initialize the top nav with user's details
-function initializeTopNav() {
-	$('#userName').html(window.localStorage.getItem("userName"));
-	var url_img = window.localStorage.getItem("profilePicture");
-	if (url_img != null) $('.profilePicture').css('background-image', "url(" + url_img + ")");
-}
-
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
 function showOp(){
 	//append img child for 'view' section
 	$('#viewOp').removeAttr("style");
@@ -499,38 +488,13 @@ function showOp(){
 	}, 700);
 }
 
-function secondToTime(second){
-	var sec_num = parseInt(second, 10); // don't forget the second param
-    var hours   = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-	
-	if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    var time    = hours+':'+minutes+':'+seconds;
-    
-	// remove zore priffix 
-    for (i=0; i<4; i++){
-    	if (time[0]=='0' || time[0]==':'){
-    		time = time.substring(1, time.length);
-    	}
-    }
-    return time;
-}
-
 function show_edit_button_if_admin(){
 	if (isAdmin()){
 		$('#admin_button_holder').html("<input type='button' value='edit' onclick='goto_editPage();'>");
 	}
 }
 
-function isAdmin(){
-	if (videoJson.owner == window.localStorage.getItem("userEmail")){
-		return true;
-	}
-	return false;
-}
+
 function goto_editPage(){
 	window.location.href = "editVideo.html?videoId="+videoJson.videoId;
 }

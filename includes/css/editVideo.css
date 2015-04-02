@@ -1,0 +1,237 @@
+#profileTopNav {
+	padding: 3px;
+	background-color: #1C454B;
+	height: 50px;
+	color: white;
+}
+
+.profilePicture {
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	float: left;
+}
+
+#userName {
+	width: 250px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 15px 0px 0px 5px;
+	float: left;
+}
+
+#otherOptions {
+	width: 250px;
+	background-color: green;
+	float: right;
+}
+
+.clear {
+	clear: both;
+}
+
+#editVideoBody{
+	background-color: #C1C4C4;
+}
+
+#editVideoBody #editWrapper{
+	padding-top: 30px;
+	width: 1150px;
+	margin:0 auto;
+}
+
+#editWrapper #videoDetailsEditorHolder{
+	margin:0 auto;
+	width: 900px;
+	background-color: #B2B2B2;
+}
+
+#videoDetailsEditorHolder #leftInputsHolder{
+	width: 440px;
+	float: left; 
+	padding-left: 10px;
+	padding-top: 10px;
+}
+
+#videoDetailsEditorHolder #rightInputsHolder{
+	width: 440px;
+	float: left;
+	padding-top: 10px;
+}
+
+#editWrapper #editPanelWrapper{
+	margin:0 auto;
+	width: 900px;
+	
+	background-color: #B2B2B2;
+}
+
+/*Start of Public/Private Switch code*/
+
+.onoffswitch {
+    position: relative; width: 104px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 26px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
+    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 29px; padding: 0; line-height: 29px;
+    font-size: 15px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "Public";
+    padding-left: 10px;
+    background-color: #7DD4AE; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "Private ";
+    padding-right: 10px;
+    background-color: #EDA8A8; color: #707070;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 14px; margin: 7.5px;
+    background: #FFFFFF;
+    border: 2px solid #999999; border-radius: 26px;
+    position: absolute; top: 0; bottom: 0; right: 71px;
+    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
+    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}
+/*End of Public/Private Switch code*/
+
+.inputHolder{
+	width: 450px;
+	margin-bottom: 3px;
+}
+
+.inputHolder .editInputLabel{
+	width: 100px;
+	
+}
+
+.inputHolder #editLectureTitleInput{
+	width: 303px;
+}
+
+.inputHolder .editSelect{
+	width: 200px;
+}
+
+.inputHolder #privacyLeft{
+	width: 100px;
+}
+
+.inputHolder #privacyRight{
+	width: 330px;
+	position: relative;
+	bottom: 29px;
+	left: 100px;
+}
+
+#editWrapper #draggableImagesHolder{
+	width: 900px;
+	height: 170px;
+	background-color: #6A6A6A;
+	position: relative;
+}
+
+#draggableImagesHolder img{
+	width: 150px;
+	height: 150px;
+}
+
+#editWrapper #playerHolder{
+	width: 900px;
+	height: 25px;
+	padding-top: 8px;
+	
+	
+	background-color: #3F3F3F;
+}
+
+#editWrapper #draggableTagsHolder{
+	width: 900px;
+	height: 50px;
+	background-color: #6A6A6A;
+	position: relative;
+}
+
+#draggableImagesHolder .draggableImage {
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	background: yellow;
+	display: inline-block;
+	border: 1px solid #ffffff;
+}
+
+#draggableTagsHolder .draggableTag {
+	position: absolute;
+	width: 175px;
+	height: auto;
+	background: #088DA5;
+	display: inline-block;
+	border: 1px solid #000000;
+}
+
+
+
+.draggableTag #tagEditButton{
+	display: inline;
+}
+
+.draggableTag #confirmOrCancelButtons{
+	padding: 3px 0 3px 0;
+	float: left;
+	display: none;
+}
+
+.draggableTag  #tagTextHolder{
+	float: left;
+	color: white;
+}
+
+#tagTextHolder #editTagTextArea{
+	color: black;
+}
+
+.draggableTag{
+	padding: 5px;
+}
+
+.draggableTag #addNewTagHolder{
+	width: 900px;
+	height: 100px;
+	background-color: #373446;
+}
+
+#playerHolder .slider{
+	width: 900px;
+}
+
+#editConfirmationButtons{
+	margin-top:100px;
+	height: 30px;
+	text-align: center;
+}
+.clear{
+	clear: both;
+}
