@@ -28,6 +28,11 @@ var muteBtn;
 // Song contains the second user seek to
 var bestMatch;
 
+var op = {
+	height: 256,
+	width: 256
+};
+
 //var pixelsToSec;
 
 $(document).ready(function() {
@@ -122,42 +127,42 @@ function doEverySecond() {
 		});
 	}
 }
-function secondToTime(second){
-	var sec_num = parseInt(second, 10); // don't forget the second param
-    var hours   = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-	
-	var hoursFlag = false;
-	var hoursNeedZero = false;
-	
-	// hours
-    if (hours   < 10) {
-    	if (hours >= 1){
-    		hoursFlag = true;
-    		//hours   = hours; //use the hours as is
-    	}
-    }
-    
-    // minutes
-    if (minutes < 10) {
-    	if (minutes >=1){
-    		if (hoursFlag) minutes = "0"+minutes;
-    		//else //minutes   = minutes; //use the minutes as is
-    	}
-    }
-    
-    //if minutes<10 && minutes>0 && hoursFlag minutes = '0'+minutes
-    //find just the 0X situations, else use the obj as is
-    if (seconds < 10) {seconds = "0"+seconds;}
-
-    var time;    
-    if ( parseInt(hours) <=0 )	time = minutes+':'+seconds;
-	if ( parseInt(minutes) <=0 ) time = "0"+':'+seconds;
-	else 						time = hours+':'+minutes+':'+seconds;
-   
-    return time;
-}
+// function secondToTime(second){
+	// var sec_num = parseInt(second, 10); // don't forget the second param
+    // var hours   = Math.floor(sec_num / 3600);
+    // var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    // var seconds = sec_num - (hours * 3600) - (minutes * 60);
+// 	
+	// var hoursFlag = false;
+	// var hoursNeedZero = false;
+// 	
+	// // hours
+    // if (hours   < 10) {
+    	// if (hours >= 1){
+    		// hoursFlag = true;
+    		// //hours   = hours; //use the hours as is
+    	// }
+    // }
+//     
+    // // minutes
+    // if (minutes < 10) {
+    	// if (minutes >=1){
+    		// if (hoursFlag) minutes = "0"+minutes;
+    		// //else //minutes   = minutes; //use the minutes as is
+    	// }
+    // }
+//     
+    // //if minutes<10 && minutes>0 && hoursFlag minutes = '0'+minutes
+    // //find just the 0X situations, else use the obj as is
+    // if (seconds < 10) {seconds = "0"+seconds;}
+// 
+    // var time;    
+    // if ( parseInt(hours) <=0 )	time = minutes+':'+seconds;
+	// if ( parseInt(minutes) <=0 ) time = "0"+':'+seconds;
+	// else 						time = hours+':'+minutes+':'+seconds;
+//    
+    // return time;
+// }
 function secondSlider_Handler() {
 	$("#secondSlider").on("input", function() {
 		// get value as sliding - use for show brief images & find witch sound to use
@@ -237,7 +242,7 @@ function initialiseMediaPlayer() {
 	console.log("initialiseMediaPlayer");
 	
 	// Get handles to each of the buttons and required elements
-	playPauseBtn = document.getElementById('play-pause-button');
+	playPauseBtn = document.getElementById('play');
 	muteBtn = document.getElementById('mute-button');
 
 	// Hide the browser's default controls
@@ -346,7 +351,7 @@ function findView(){
 			}
 		}
 	}
-	if (!wasPic) $('#viewPhotos').attr("src", 'includes/media/default_poster.png');
+	if (!wasPic) $('#viewPhotos').attr("src", 'includes/img/default_poster.png');
 }
 
 function togglePlayPause() {
@@ -372,7 +377,7 @@ function stopPlayer() {
 	mediaSound.currentTime = 0;
 	// Reset the progress bar to 0
 	$("#secondSlider").val(0);
-	$('#viewPhotos').attr("src" ,'includes/media/default_poster.png');
+	$('#viewPhotos').attr("src" ,'includes/img/default_poster.png');
 	$("#viewerTag").empty();
 	changeProgressColor(0);
 }
@@ -410,7 +415,7 @@ function replayMedia() {
 function changeButtonType(btn, value) {
 	btn.title = value;
 	btn.innerHTML = value;
-	btn.className = value;
+	btn.id = value;
 }
 
 // Loads a video item into the media player
@@ -440,7 +445,7 @@ function canPlayVideo(ext) {
 function resetPlayer() {
 	// Reset the progress bar to 0
 	$("#secondSlider").val(0);
-	$('#viewPhotos').attr("src" ,'includes/media/default_poster.png');
+	$('#viewPhotos').attr("src" ,'includes/img/default_poster.png');
 	$("#viewerTag").empty();
 	changeProgressColor(0);
 		
@@ -460,21 +465,29 @@ function changeProgressColor(val){
 
 function showOp(){
 	//append img child for 'view' section
-	$('#viewOp').removeAttr("style");
-	$('#viewOp').css('position', 'absolute' );
-	$('#viewOp').css('left', $( document ).width()-$('#viewOp').width() );
-	$('#viewOp').css('top', '220px' );
 	
 	if (mediaSound.paused || mediaSound.ended) {
-			// Pause button
-			$('#viewOp').attr('src','includes/media/pauseCircle.png');
-		}
-		// Otherwise it must currently be playing
-		else {
-			// Play image
-			$('#viewOp').attr('src','includes/media/playCircle.png');
-		}
-	//$('#viewContainer').prepend("<img id='viewOp' >");
+		// Pause button
+		$('#viewOp').attr('src','includes/img/pauseCircle.png');
+	}
+	// Otherwise it must currently be playing
+	else {
+		// Play image
+		$('#viewOp').attr('src','includes/img/playCircle.png');
+	}
+	
+	// Change location
+	$('#viewOp').removeAttr("style");
+	$('#viewOp').css('position', 'absolute' ); 
+	var position = $('#viewContainer').position();
+	var videoHeight = $('#viewContainer').height();
+	var videoWidth = $('#viewContainer').width();
+	var centerVideo = {
+		fromTop: position.top + videoHeight/2 - op.height/2,
+		fromLeft: position.left + videoWidth/2 - op.width/2
+	};	
+	$('#viewOp').css('top', centerVideo.fromTop+'px' );
+	$('#viewOp').css('left', centerVideo.fromLeft+'px'); 
 	
 	var timesRun = 0;
 	var interval = setInterval(function(){
@@ -485,7 +498,7 @@ function showOp(){
 	        $('#viewOp').hide();
 	    }
 	    //do whatever here..
-	}, 700);
+	}, 400);
 }
 
 function show_edit_button_if_admin(){
@@ -496,5 +509,43 @@ function show_edit_button_if_admin(){
 
 
 function goto_editPage(){
-	window.location.href = "editVideo.html?videoId="+videoJson.videoId;
+	window.location.href = "editVideo.html?videoId="+videoJson.sessionId;
 }
+
+
+// Vote
+function isUserVote(){
+	
+}
+function get_user_vote(){
+	
+}
+function what_user_vote(){
+	if (isUserVote()){
+		if ( get_user_vote() == 'true' ){
+			$('#voteUp').css('background', 'no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflq3y4n_.webp) -20px -116px');
+		}else{
+			$('#voteDownLink').css('opacity', 1);
+		}
+	}
+}
+function check_if_user_vote_before(){
+		
+}
+function disable_vote(){
+	
+}
+function set_user_vote() {
+	if ( check_if_user_vote_before() ) {
+		disable_vote();
+	}
+	vote();
+}
+function vote(val){
+	if (val == 1){
+		$('#voteUp').css('background', 'no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflynt-iQ.webp) -279px -142px');
+	}else if (val == -1){
+		$('#voteDownLink').css('opacity', 1);
+	}
+}
+

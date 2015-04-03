@@ -1,0 +1,75 @@
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+header, footer, nav, main, section, article, aside {
+	display: block;
+}
+
+#myRecordingsWrapper{
+	width: 1200px;
+	margin: 0 auto;
+	background-color: yellow;
+}
+
+#myRecordingsBody {
+	background-color: #C1C4C4;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+
+#myRecordingsTopNav {
+	padding: 3px;
+	background-color: #1C454B;
+	height: 50px;
+	color: white;
+}
+
+.profilePicture {
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	float: left;
+}
+
+#userName {
+	width: 250px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 15px 0px 0px 5px;
+	float: left;
+}
+
+
+
+#sideMenu{
+	height: 500px;
+	width: 250px;
+	float: right;
+	padding: 10px;
+	background-color: #9A9C9C;
+	border-left: 1px solid #000000;
+}
+
+#videosWrapper{
+	float: left;
+	background-color: #9A9C9C;
+	height: 500px;
+	width: 950px;
+}
+
+.menuTitle{
+	padding-left: 5px;
+	font-weight: bolder;
+}
+
+.menuItem{
+	padding-left: 15px;
+}
+
+.clear {
+	clear: both;
+}
+

@@ -13,18 +13,26 @@
   <!-- End of media includes -->
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  
+  <script src='includes/js/shared_functions.js'></script>
+  <script src="includes/js/playmovie.js"></script>
+  <link rel='stylesheet' href='includes/css/media-player-controls.css'>
+  
   <script src="includes/js/bootstrap.js"></script>
   <script src="includes/js/editVideo.js"></script>
   <script src="includes/js/lightbox.min.js"></script>
+  
+  
+  
 
 </head>
 <body id="editVideoBody">
 <nav id="profileTopNav">
-			<section class="profilePicture"></section>
-			<section id="userName"></section>
-			<section id="otherOptions"></section>
-			<div class="clear"></div>
-		</nav>
+	<section class="profilePicture"></section>
+	<section id="userName"></section>
+	<section id="otherOptions"></section>
+	<div class="clear"></div>
+</nav>
 		
 <div id="editWrapper">
 	<section id="videoDetailsEditorHolder">
@@ -53,11 +61,26 @@
 		<div class="clear"></div>
 	</section>
 	<section id="editPanelWrapper">
+		<!-- Audio -->
+		<audio id="mediaSound" hidden>
+			<source id="audioSrc" src="" type="audio/mpeg">
+			Your browser does not support the video tag.
+		</audio>
+		<!-- Controls -->
+		<section id='media-controls'>
+			<button id='replay' class='mediaControls' title='replay' onclick='replayMedia();'>Replay</button>	
+			<button id='play' class='mediaControls' title='play' onclick='togglePlayPause();'>Play</button>
+			<button id='stop' class='mediaControls' title='stop' onclick='stopPlayer();'>Stop</button>
+			<button id='volume-plus' class='mediaControls' title='increase volume' onclick='changeVolume("+");'>Increase volume</button>
+			<button id='volume-minus' class='mediaControls' title='decrease volume' onclick='changeVolume("-");'>Decrease volume</button>
+			<button id='mute' class='mediaControls' title='mute' onclick='toggleMute("true");'>Mute</button>
+		</section>
+		
 		<section id="draggableImagesHolder">
 			<div class="clear"></div>
 		</section>
 		<section id="playerHolder">
-			<input class="slider" type="range" min="0"  value="0">
+			<input class="slider" type="range" min="0"  value="0" id='secondSlider'>
 		</section>
 		<section id="draggableTagsHolder">
 			<div class="clear"></div>

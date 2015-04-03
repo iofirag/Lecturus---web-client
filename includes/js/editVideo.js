@@ -19,8 +19,39 @@ var currentPos,
     currTagInitSecond,
     videoId;
 
+
+function signinCallback(authResult) {
+	if (authResult['status']['signed_in']) {
+				gapi.client.load('plus', 'v1', function() {
+			var request = gapi.client.plus.people.get({
+				'userId' : 'me'
+			});
+			request.execute(function(resp) {
+				console.log(resp);
+				
+				
+					
+	$('#userName').html(resp.displayName);
+	$('.profilePicture').css('background-image', "url(" + resp.image.url + ")");
+
+
+
+			});
+		});
+		
+
+	} else {
+		/*	Update the app to reflect a signed out user
+		 Possible error values:
+		 "user_signed_out" - User is signed-out
+		 "access_denied" - User denied access to your app
+		 "immediate_failed" - Could not automatically log in the user */
+		console.log('Sign-in state: ' + authResult['error']);
+
+	}
+}
+
 $(document).ready(function() {
-	//videoId = $.QueryString('videoId');
 	videoId = "123";
 	/*Get list of courses */
 	$.ajax({
@@ -379,12 +410,13 @@ $(document).ready(function() {
 					//save changes click listener
 
 					$("#saveChanges").click(function() {
+						
 						//save text from 'title' input to the Json
 						videoJson.title = $("#editLectureTitleInput").val();
 
 						//save text from description text area
 						videoJson.description = $("#descriptionLectureInput").val();
-
+						debugger;
 						$.ajax({
 							type : "POST",
 							url : 'http://lecturus.herokuapp.com/session/updateSession/',
@@ -401,26 +433,6 @@ $(document).ready(function() {
 							}
 						});
 
-						//*************************
-						$.ajax({
-							type : "POST",
-							url : 'http://lecturus.herokuapp.com/session/getUserSessions/',
-							dataType : 'json',
-							data : {
-								email : "vandervidi@gmail.com"
-							},
-							success : function(data) {
-								if (data.status == 1) {
-									console.log(videoJson);
-									alert("updates are sent");
-								}
-							},
-							error : function(objRequest, errortype) {
-								console.log("Cannot get video Json");
-							}
-						});
-
-						//*************************
 
 					});
 				},

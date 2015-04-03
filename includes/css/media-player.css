@@ -30,9 +30,6 @@ h1 {
 #videoTitle{
 	float:left;
 }
-/*#{
-	border: 2px solid black;
-}*/
 #media-player {
 	/*width: 70%;*/
 	/*padding:1em 1em .5em;*/
@@ -48,7 +45,7 @@ h1 {
 	/*display: none;*/
 }
 #viewPhotos{
-	background-image: url('../media/default_poster.png');
+	background-image: url('../img/default_poster.png');
 	/*width: 100%;*/
 }
 #viewPhotos_darkBackground{
@@ -64,19 +61,30 @@ h1 {
 #voteContainerLine{
 	height: 20px;
 }
-#viewerDescription{
+#voteContainer{
+	/*float:right;*/
+	/*height: 20px;*/
+	/*background-size: auto;*/
+  	/*width: 20px;*/
+  	height: 20px;
+}
+#viewerDescription {
 	/*position: relative;
 	bottom:4px;*/
 	/*height: 20px;*/
 	background-color: #cccccc;
 }
-#voteContainer{
-	float:right;
-	height: 20px;
-}
-.voteLinks{
+
+.voteLinks {
 	float: left; 
 	height:inherit;
+	opacity: .5;
+}
+.voteLinks:hover {
+	opacity: .6;
+}
+.voteLinks:active {
+	opacity: 1;
 }
 .voteNumber {
 	/*width: 20px;*/
@@ -86,21 +94,26 @@ h1 {
 	float: left;
 }
 .votePic {
-	width: 15px;
-	background-repeat: no-repeat;
+	width: 20px;
+	/*background-repeat: no-repeat;*/
 	height: inherit;
 	background-size: 100%;
-	margin-top: 3px;
-	margin-bottom: 3px;
+	/*margin-top: 3px;*/
+	/*margin-bottom: 3px;*/
 	float: left;
 	margin-left: 5px;
   	margin-right: 5px;
 }
 #voteDown{
-	background-image: url('../media/down.png');
+	/*background-image: url('../img/down.png');*/
+	background: no-repeat url('//s.ytimg.com/yts/imgbin/www-hitchhiker-vflq3y4n_.webp') -275px -47px;
+	/*// no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflynt-iQ.webp) -552px -77px;*/
 }
 #voteUp{
-	background-image: url('../media/up.png');
+	/*background-image: url('../img/up.png');*/
+	background: no-repeat url('//s.ytimg.com/yts/imgbin/www-hitchhiker-vflq3y4n_.webp') -109px -143px;
+	/* // no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflq3y4n_.webp) -20px -116px	
+	// no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflynt-iQ.webp) -279px -142px; */
 }
 
 
@@ -115,153 +128,4 @@ h1 {
 }
 #showtime{
 	/*display: inherit;*/
-}
-/*video {
-	border:1px solid #2e52a4;
-	width:100%;
-	background:#000;
-}*/
-button {
-	text-indent:-9999px;
-	width:16px;
-	height:16px;
-	border:none;
-	cursor:pointer;
-	background:transparent url('../media/buttons.png') no-repeat 0 0;
-}
-
-.pause { background-position:-19px 0; }
-.stop { background-position:-38px 0; }
-.volume-plus { background-position:-57px 0; }
-.volume-minus { background-position:-76px 0; }
-.mute { background-position:-95px 0; }
-.unmute { background-position:-114px 0; }
-.replay { background-position:-133px 0; }
-
-progress {
-	color:#fff;
-	font-size:12px;
-	width:172px;
-	height:16px;
-	border:none;
-	margin-right:5px;
-	background:#434343;
-}
-progress::-moz-progress-bar { background:#2e52a4; }
-
-#media-play-list {
-	float:left;
-	clear:both;
-	color:#aaa;
-	width:100%;
-	margin-top:10px;
-	border-top:1px solid #2e52a4;
-}
-#media-play-list  h2 { font-size:12px; }
-#play-list {
-	padding:0;
-	font-size:12px;
-	list-style-type:none;
-}
-#play-list li {
-	cursor:pointer;
-	padding-left:15px;
-	background:transparent url('../media/item.png') no-repeat 0 4px;
-}
-
-
-
-/**************************************************************************************************/
-/**************************************************************************************************/
-/**************************************************************************************************/
-/* Inpur Range */
-
-input[type=range] {
-    /*removes default webkit styles*/
-    -webkit-appearance: none;
-    
-    /*fix for FF unable to apply focus style bug */
-    /*border: 1px solid white;*/
-    
-    /*required for proper track sizing in FF*/
-    /*width: 100%;*/
-}
-input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 5px;
-    /*background: #ddd;*/
-    border: none;
-    border-radius: 3px;
-}
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    border: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background: goldenrod;
-    margin-top: -4px;
-}
-input[type=range]:focus {
-    outline: none;
-}
-input[type=range]:focus::-webkit-slider-runnable-track {
-    /*background: #ccc;*/
-}
-
-input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 5px;
-    /*background: #ddd;*/
-    border: none;
-    border-radius: 3px;
-}
-input[type=range]::-moz-range-thumb {
-    border: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background: goldenrod;
-}
-
-/*hide the outline behind the border*/
-input[type=range]:-moz-focusring{
-    outline: 1px solid white;
-    outline-offset: -1px;
-}
-
-input[type=range]::-ms-track {
-    width: 100%;
-    height: 5px;
-    
-    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
-    background: transparent;
-    
-    /*leave room for the larger thumb to overflow with a transparent border */
-    border-color: transparent;
-    border-width: 6px 0;
-
-    /*remove default tick marks*/
-    color: transparent;
-}
-input[type=range]::-ms-fill-lower {
-    background: #777;
-    border-radius: 10px;
-}
-input[type=range]::-ms-fill-upper {
-    background: #ddd;
-    border-radius: 10px;
-}
-input[type=range]::-ms-thumb {
-    border: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background: goldenrod;
-}
-input[type=range]:focus::-ms-fill-lower {
-    background: #888;
-}
-input[type=range]:focus::-ms-fill-upper {
-    background: #ccc;
 }

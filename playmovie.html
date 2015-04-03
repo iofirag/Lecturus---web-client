@@ -8,6 +8,7 @@
 		<!-- lecturus js - sound Handler -->
 		<script src="includes/js/playmovie.js"></script>
 		<link rel='stylesheet' href='includes/css/media-player.css'>
+		<link rel='stylesheet' href='includes/css/media-player-controls.css'>
 		<link rel="stylesheet" href="includes/css/main.css">
 		<title>Show movie</title>
 	</head>
@@ -32,7 +33,7 @@
 				<!-- Viewer -->
 				<section id='viewContainer'>
 					<img id="viewOp">
-					<img id="viewPhotos" src="includes/media/default_poster.png" onclick="togglePlayPause();">
+					<img id="viewPhotos" src="includes/img/default_poster.png" onclick="togglePlayPause();">
 				</section>
 				<audio id="mediaSound" hidden>
 					<source id="audioSrc" src="" type="audio/mpeg">
@@ -50,11 +51,11 @@
 						<hr class='splitter'>
 						<section id='voteContainerLine'>
 							<section id='voteContainer'>
-								<a href='#' class='voteLinks' id='voteDownLink'>
+								<a href='#' class='voteLinks' id='voteDownLink' onclick="set_user_vote(-1)">
 									<section class='voteNumber' id='voteDown_val'></section>
 									<section class='votePic' id='voteDown'></section>
 								</a>
-								<a href='#' class='voteLinks' id='voteUpLink'>
+								<a href='#' class='voteLinks' id='voteUpLink' onclick="set_user_vote(1);">
 									<section class='votePic' id='voteUp'></section>
 									<section class='voteNumber' id='voteUp_val'></section>
 								</a>
@@ -65,12 +66,12 @@
 				</section>
 				<!-- Controls -->
 				<section id='media-controls'>
-					<button id='replay-button' class='replay' title='replay' onclick='replayMedia();'>Replay</button>	
-					<button id='play-pause-button' class='play' title='play' onclick='togglePlayPause();'>Play</button>
-					<button id='stop-button' class='stop' title='stop' onclick='stopPlayer();'>Stop</button>
-					<button id='volume-inc-button' class='volume-plus' title='increase volume' onclick='changeVolume("+");'>Increase volume</button>
-					<button id='volume-dec-button' class='volume-minus' title='decrease volume' onclick='changeVolume("-");'>Decrease volume</button>
-					<button id='mute-button' class='mute' title='mute' onclick='toggleMute("true");'>Mute</button>
+					<button id='replay' class='mediaControls' title='replay' onclick='replayMedia();'>Replay</button>	
+					<button id='play' class='mediaControls' title='play' onclick='togglePlayPause();'>Play</button>
+					<button id='stop' class='mediaControls' title='stop' onclick='stopPlayer();'>Stop</button>
+					<button id='volume-plus' class='mediaControls' title='increase volume' onclick='changeVolume("+");'>Increase volume</button>
+					<button id='volume-minus' class='mediaControls' title='decrease volume' onclick='changeVolume("-");'>Decrease volume</button>
+					<button id='mute' class='mediaControls' title='mute' onclick='toggleMute("true");'>Mute</button>
 				</section>
 				
 				
