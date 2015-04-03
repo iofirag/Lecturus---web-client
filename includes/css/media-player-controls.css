@@ -1,15 +1,39 @@
+.mediaControls {
+	text-indent:-9999px;
+	width:16px;
+	height:16px;
+	border:none;
+	cursor:pointer;
+	background:transparent url('../img/buttons.png') no-repeat 0 0;
+}
+
+#pause { background-position:-19px 0; }
+#stop { background-position:-38px 0; }
+#volume-plus { background-position:-57px 0; }
+#volume-minus { background-position:-76px 0; }
+#mute { background-position:-95px 0; }
+#unmute { background-position:-114px 0; }
+#replay { background-position:-133px 0; }
+
+
+
+/**************************************************************************************************/
+/**************************************************************************************************/
+/**************************************************************************************************/
+/* Inpur Range */
+
 input[type=range] {
     /*removes default webkit styles*/
     -webkit-appearance: none;
     
     /*fix for FF unable to apply focus style bug */
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     
     /*required for proper track sizing in FF*/
-    width: 300px;
+    /*width: 100%;*/
 }
 input[type=range]::-webkit-slider-runnable-track {
-    width: 300px;
+    width: 100%;
     height: 5px;
     /*background: #ddd;*/
     border: none;
@@ -32,7 +56,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 input[type=range]::-moz-range-track {
-    width: 300px;
+    width: 100%;
     height: 5px;
     /*background: #ddd;*/
     border: none;
@@ -53,7 +77,7 @@ input[type=range]:-moz-focusring{
 }
 
 input[type=range]::-ms-track {
-    width: 300px;
+    width: 100%;
     height: 5px;
     
     /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
@@ -87,19 +111,3 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
     background: #ccc;
 }
-
-
-/* check if needed for fill input range */
-/*input[type="range"]{
-    -webkit-appearance: none;
-    -moz-apperance: none;
-    border-radius: 6px;
-    height: 6px;
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        right top,
-        color-stop(0.15, #94A14E),
-        color-stop(0.15, #C5C5C5)
-    );
-}*/

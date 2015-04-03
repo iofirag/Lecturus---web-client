@@ -1,72 +1,131 @@
-
+/**************************************************************************************************/
+/**************************************************************************************************/
+/**************************************************************************************************/
+* {
+	margin: 0 auto;
+	padding: 0;
+}
+/* Media Player */
 body { font-family:'verdana'; }
+
+#wrapper {
+	width: 80%;
+	margin: auto;
+}
 
 h1 { 
 	font-size:16px;
 	color:#333;
 }
-
-#media-player {
-	/*float:left;*/
-	padding:1em 1em .5em;
-	/*background-color:#333;*/
+.title{
+	/*padding-top:2px;
+	padding-bottom: 2px;*/
 }
-
-video {
-	border:1px solid #2e52a4;
-	width:585px;	/*305*/
-	height:450px;	/*160*/
-	background:#000;
-}
-
-button {
-	text-indent:-9999px;
-	width:16px;
-	height:16px;
-	border:none;
-	cursor:pointer;
-	background:transparent url('../media/buttons.png') no-repeat 0 0;
-}
-
-.pause { background-position:-19px 0; }
-.stop { background-position:-38px 0; }
-.volume-plus { background-position:-57px 0; }
-.volume-minus { background-position:-76px 0; }
-.mute { background-position:-95px 0; }
-.unmute { background-position:-114px 0; }
-.replay { background-position:-133px 0; }
-
-progress {
-	color:#fff;
-	font-size:12px;
-	width:172px;
-	height:16px;
-	border:none;
-	margin-right:5px;
-	background:#434343;
-}
-progress::-moz-progress-bar { background:#2e52a4; }
-
-#media-play-list {
+#degreeName{
 	float:left;
-	clear:both;
-	color:#aaa;
-	width:100%;
-	margin-top:10px;
-	border-top:1px solid #2e52a4;
 }
-#media-play-list  h2 { font-size:12px; }
-#play-list {
-	padding:0;
-	font-size:12px;
-	list-style-type:none;
+#courseName{
+	float:left;
 }
-#play-list li {
-	cursor:pointer;
-	padding-left:15px;
-	background:transparent url('../media/item.png') no-repeat 0 4px;
+#videoTitle{
+	float:left;
+}
+#media-player {
+	/*width: 70%;*/
+	/*padding:1em 1em .5em;*/
+	width: 640px;
+	height: 360px;
+}
+#viewContainer{
+	background-color: black;
+}
+#viewOp{
+	position: absolute;
+	/*width: 100%;*/
+	/*display: none;*/
+}
+#viewPhotos{
+	background-image: url('../img/default_poster.png');
+	/*width: 100%;*/
+}
+#viewPhotos_darkBackground{
+	background-color: black;
+}
+#viewerBottom{
+	  position: relative;
+  bottom: 4px;
+}
+.splitter{
+	width:95%;
+}
+#voteContainerLine{
+	height: 20px;
+}
+#voteContainer{
+	/*float:right;*/
+	/*height: 20px;*/
+	/*background-size: auto;*/
+  	/*width: 20px;*/
+  	height: 20px;
+}
+#viewerDescription {
+	/*position: relative;
+	bottom:4px;*/
+	/*height: 20px;*/
+	background-color: #cccccc;
+}
+
+.voteLinks {
+	float: left; 
+	height:inherit;
+	opacity: .5;
+}
+.voteLinks:hover {
+	opacity: .6;
+}
+.voteLinks:active {
+	opacity: 1;
+}
+.voteNumber {
+	/*width: 20px;*/
+	/*height: inherit;*/
+	/*margin-left: 5px;
+	margin-right: 5px;*/
+	float: left;
+}
+.votePic {
+	width: 20px;
+	/*background-repeat: no-repeat;*/
+	height: inherit;
+	background-size: 100%;
+	/*margin-top: 3px;*/
+	/*margin-bottom: 3px;*/
+	float: left;
+	margin-left: 5px;
+  	margin-right: 5px;
+}
+#voteDown{
+	/*background-image: url('../img/down.png');*/
+	background: no-repeat url('//s.ytimg.com/yts/imgbin/www-hitchhiker-vflq3y4n_.webp') -275px -47px;
+	/*// no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflynt-iQ.webp) -552px -77px;*/
+}
+#voteUp{
+	/*background-image: url('../img/up.png');*/
+	background: no-repeat url('//s.ytimg.com/yts/imgbin/www-hitchhiker-vflq3y4n_.webp') -109px -143px;
+	/* // no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflq3y4n_.webp) -20px -116px	
+	// no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflynt-iQ.webp) -279px -142px; */
 }
 
 
-
-
+#slider{
+	background-color: #333333;
+	/*position: relative;
+  	bottom: 4px;*/
+  	/*width: 100%;*/
+}
+#secondSlider {
+	width: 100%;
+}
+#showtime{
+	/*display: inherit;*/
+}

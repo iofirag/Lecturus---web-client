@@ -4,16 +4,15 @@
 		<meta charset="utf-8">
 		<!-- jquery -->
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src='includes/js/shared_functions.js'></script>
 		<!-- lecturus js - sound Handler -->
-		<link href='includes/css/media-player.css' rel='stylesheet' />
-		<script src='includes/js/playerMovie.js'></script>
-		<script src='includes/js/media-player.js'></script>
 		<script src="includes/js/playmovie.js"></script>
+		<link rel='stylesheet' href='includes/css/media-player.css'>
+		<link rel='stylesheet' href='includes/css/media-player-controls.css'>
 		<link rel="stylesheet" href="includes/css/main.css">
-		<link rel="stylesheet" href="includes/css/input_range.css">
 		<title>Show movie</title>
 	</head>
-	<body id="playerBody">
+	<body>
 		<nav id="profileTopNav">
 			<section class="profilePicture"></section>
 			<section id="userName"></section>
@@ -21,31 +20,66 @@
 			<div class="clear"></div>
 		</nav>
 		
-		<section id="media-player">
-			<!-- Titles -->
-			<h1 id="title"></h1>
-
-			<!-- Video 320*240 def -->
-			<video id="media-video" width="585" height="450" controls poster="includes/media/default_poster.png">
-				<source id="audioSrc" src="" type="audio/mpeg">
-				Your browser does not support the video tag.
-			</video>
-			<div id='media-controls'>
-				<!-- <progress id='progress-bar' min='0' max='100' value='0'>0% played</progress> -->
-				<button id='replay-button' class='replay' title='replay' onclick='replayMedia();'>Replay</button>	
-				<button id='play-pause-button' class='play' title='play' onclick='togglePlayPause();'>Play</button>
-				<button id='stop-button' class='stop' title='stop' onclick='stopPlayer();'>Stop</button>
-				<button id='volume-inc-button' class='volume-plus' title='increase volume' onclick='changeVolume("+");'>Increase volume</button>
-				<button id='volume-dec-button' class='volume-minus' title='decrease volume' onclick='changeVolume("-");'>Decrease volume</button>
-				<button id='mute-button' class='mute' title='mute' onclick='toggleMute("true");'>Mute</button>	
-			</div>
-
-			<!-- Sub-titles -->
-			<h2 id="subtitle"></h2>
-
-			<!-- Slider -->
-			<input class="slider" type="range" id="secondSlider" value="0" min="0" max="0" >
-			<span id="showtime">0</span>
-		</section>
+		<div id="wrapper">
+			<section id="media-player">
+				<!-- Titles -->
+				<article class='title'>
+					<section id='degreeName'></section>
+					<section id='courseName'></section>
+					<section id='videoTitle'></section>
+					<div class='clear'></div>
+				</article>
+	
+				<!-- Viewer -->
+				<section id='viewContainer'>
+					<img id="viewOp">
+					<img id="viewPhotos" src="includes/img/default_poster.png" onclick="togglePlayPause();">
+				</section>
+				<audio id="mediaSound" hidden>
+					<source id="audioSrc" src="" type="audio/mpeg">
+					Your browser does not support the video tag.
+				</audio>
+				
+				<!-- Slider -->
+				<section id='viewerBottom'>
+					<section id='slider'>
+						<input class='sliderRange' type="range" id="secondSlider" value="0" min="0" max="0" >
+						<section id='showtime'>0</section>
+					</section>
+					<section id='viewerDescription'>
+						<section id='viewerTag'></section>
+						<hr class='splitter'>
+						<section id='voteContainerLine'>
+							<section id='voteContainer'>
+								<a href='#' class='voteLinks' id='voteDownLink' onclick="set_user_vote(-1)">
+									<section class='voteNumber' id='voteDown_val'></section>
+									<section class='votePic' id='voteDown'></section>
+								</a>
+								<a href='#' class='voteLinks' id='voteUpLink' onclick="set_user_vote(1);">
+									<section class='votePic' id='voteUp'></section>
+									<section class='voteNumber' id='voteUp_val'></section>
+								</a>
+								<div class="clear"></div>
+							</section>
+						</section>
+					</section>
+				</section>
+				<!-- Controls -->
+				<section id='media-controls'>
+					<button id='replay' class='mediaControls' title='replay' onclick='replayMedia();'>Replay</button>	
+					<button id='play' class='mediaControls' title='play' onclick='togglePlayPause();'>Play</button>
+					<button id='stop' class='mediaControls' title='stop' onclick='stopPlayer();'>Stop</button>
+					<button id='volume-plus' class='mediaControls' title='increase volume' onclick='changeVolume("+");'>Increase volume</button>
+					<button id='volume-minus' class='mediaControls' title='decrease volume' onclick='changeVolume("-");'>Decrease volume</button>
+					<button id='mute' class='mediaControls' title='mute' onclick='toggleMute("true");'>Mute</button>
+				</section>
+				
+				
+				<!-- Sub-titles -->
+				<h2 id="tag"></h2>
+				
+				<section id='admin_button_holder'></section>
+			</section>
+		</div>
 	</body>
 </html>
