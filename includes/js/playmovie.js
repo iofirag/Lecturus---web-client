@@ -1,3 +1,4 @@
+var minimalMode=false;
 // Json get in ajax
 var videoJson;
 
@@ -33,68 +34,110 @@ var op = {
 	width: 256
 };
 
-//var pixelsToSec;
+function signinCallback(authResult) {
+	if (authResult['status']['signed_in']) {
+		gapi.client.load('plus', 'v1', function() {
+			var request = gapi.client.plus.people.get({
+				'userId' : 'me'
+			});
+			request.execute(function(resp) {
+				$('#topNavProfilePic').css('background-image', "url("+ resp.image.url + ")");
+				$("#userName").text(resp.displayName);
+			});
+		});
+
+		$("#signOut").click(function() {
+			gapi.auth.signOut();
+		});
+
+	} else {
+		/*	Update the app to reflect a signed out user
+		 Possible error values:
+		 "user_signed_out" - User is signed-out
+		 "access_denied" - User denied access to your app
+		 "immediate_failed" - Could not automatically log in the user */
+		console.log('Sign-in state: ' + authResult['error']);
+		window.location.href = "index.html";
+
+	}
+}
+
 
 $(document).ready(function() {
 	// init the top page
-	initializeTopNav();
+	//initializeTopNav();
 	
+	if (window.location.pathname.indexOf('editVideo.html') >= 0 ) minimalMode=true;
+	
+	if (!minimalMode) {
+		console.log('full mode');
+		/* download video json from lecturus web-service */
+		var videoId = "";
+		if (getParameterByName("videoId")!=''){
+			videoId = getParameterByName("videoId");
+		
+			$.ajax({
+				type : "GET",
+				url :  'http://lecturus.herokuapp.com/session/getVideoById/?videoId='+videoId, // //'includes/js/example_video.json',
+				async : false,
+				dataType : 'json',
+				success : function(data) {
+					
+					if (data.status==1){
+						run_media_player(data , false);
+					}else{
+						console.log('server status code are not 1');
+					}
+				},
+				error : function(objRequest, errortype) {
+					console.log(errortype);
+					console.log("Can't do because: " + error);
+				}
+			});
+		}else{
+			console.log('QueryString "?videoId=NUMBER" are missing!');
+		}
+	}
+});
+
+function run_media_player(data, minimal_flag){
+	minimalMode = minimal_flag;
 	// init media obj
 	mediaSound = $('#mediaSound')[0];
 	
-	/* download video json from lecturus web-service */
-	var videoId = "";
-	if (getParameterByName("videoId")!=''){
-		videoId = getParameterByName("videoId");
+	initialiseMediaPlayer();
+					
+	// Build video obj
+	videoJson = data.info;
+	
+	if (!minimalMode) {
+		// set the title
+		$("#degreeName").html( get_name_from_degreeNum(videoJson.degree) );
+		$('#courseName').html('&nbsp;> ' + get_name_from_courseNum(videoJson.course) );
+		$('#videoTitle').html('&nbsp;> ' + videoJson.title);
+	
+		// Votes
+		$('#voteDown_val').html(videoJson.rating.negative.value);
+		$('#voteUp_val').text(videoJson.rating.positive.value);
 	}
+	//put the first audio
+	$("#audioSrc").attr("src", videoJson.audios[audio_timeCounter].url);
+	mediaSound.load();
 	
-	//$.QueryString('videoId');
-	
-	// /*Static*/videoId = '123';
-	$.ajax({
-		type : "GET",
-		url :  'http://lecturus.herokuapp.com/session/getVideoById/?videoId='+videoId, //'includes/js/video.json', //
-		async : false,
-		dataType : 'json',
-		success : function(data) {
-			
-			if (data.status==1){
-				// Build video obj
-				videoJson = data.info;
-				
-				// set the title
-				$("#degreeName").html( get_name_from_degreeNum(videoJson.degree) );
-				$('#courseName').html('&nbsp;> ' + get_name_from_courseNum(videoJson.course) );
-				$('#videoTitle').html('&nbsp;> ' + videoJson.title);
-				
-				// Votes
-				$('#voteDown_val').html(videoJson.rating.negative.value);
-				$('#voteUp_val').text(videoJson.rating.positive.value);
-				
-				//put the first audio
-				$("#audioSrc").attr("src", videoJson.audios[audio_timeCounter].url);
-				mediaSound.load();
-				
-				//adjust slider for full video length
-				$("#secondSlider").prop({
-					'min' : 0,
-					'max' : videoJson.totalSecondLength
-				});
-				
-				// slider events handler
-				secondSlider_Handler();
-				
-				// Check if admin
-				show_edit_button_if_admin();
-			}
-		},
-		error : function(objRequest, errortype) {
-			console.log(errortype);
-			console.log("Can't do because: " + error);
-		}
+	//adjust slider for full video length
+	$("#secondSlider").prop({
+		'min' : 0,
+		'max' : videoJson.totalSecondLength
 	});
-});
-document.addEventListener("DOMContentLoaded", function() { initialiseMediaPlayer(); }, false);
+	
+	// slider events handler
+	secondSlider_Handler();
+	
+	if (!minimalMode) {
+		// Check if admin
+		show_edit_button_if_admin();
+	}
+}
 
 function doEverySecond() {
 	//update slider
@@ -106,64 +149,31 @@ function doEverySecond() {
 	// Update input-range fill before and after thumb
 	var val = (video_timeCounter - $("#secondSlider").attr('min')) / ($("#secondSlider").attr('max') - $("#secondSlider").attr('min'));
 	changeProgressColor(val);
-
-	// Check if there is element with 'video_timeCounter' key
-	if (videoJson.elements.hasOwnProperty(video_timeCounter + '')) {
-		$.each(videoJson.elements[video_timeCounter], function(key, val) {
-			switch (key) {
-			case "photo":
-				console.log("find in key: "+key+" "+videoJson.elements[video_timeCounter].photo.url);
-				$('#viewPhotos').attr("src" ,videoJson.elements[video_timeCounter].photo.url);
-				break;
-			case "tags":
-				$("#viewerTag").empty();
-				$.each( videoJson.elements[video_timeCounter].tags, function(index, val){
-					var finalText = '<section>'+val.text+'</section>';
-					$("#viewerTag").append(finalText);
-				});
-				
-				break;
-			}
-		});
+	
+	if (!minimalMode) {
+		// Check if there is element with 'video_timeCounter' key
+		if (videoJson.elements.hasOwnProperty(video_timeCounter + '')) {
+			$.each(videoJson.elements[video_timeCounter], function(key, val) {
+				switch (key) {
+				case "photo":
+					console.log("find in key: "+key+" "+videoJson.elements[video_timeCounter].photo.url);
+					$('#viewPhotos').attr("src" ,videoJson.elements[video_timeCounter].photo.url);
+					break;
+				case "tags":
+					$("#viewerTag").empty();
+					$.each( videoJson.elements[video_timeCounter].tags, function(index, val){
+						var finalText = '<section>'+val.text+'</section>';
+						$("#viewerTag").append(finalText);
+					});
+					
+					break;
+				}
+			});
+		}
 	}
 }
-// function secondToTime(second){
-	// var sec_num = parseInt(second, 10); // don't forget the second param
-    // var hours   = Math.floor(sec_num / 3600);
-    // var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    // var seconds = sec_num - (hours * 3600) - (minutes * 60);
-// 	
-	// var hoursFlag = false;
-	// var hoursNeedZero = false;
-// 	
-	// // hours
-    // if (hours   < 10) {
-    	// if (hours >= 1){
-    		// hoursFlag = true;
-    		// //hours   = hours; //use the hours as is
-    	// }
-    // }
-//     
-    // // minutes
-    // if (minutes < 10) {
-    	// if (minutes >=1){
-    		// if (hoursFlag) minutes = "0"+minutes;
-    		// //else //minutes   = minutes; //use the minutes as is
-    	// }
-    // }
-//     
-    // //if minutes<10 && minutes>0 && hoursFlag minutes = '0'+minutes
-    // //find just the 0X situations, else use the obj as is
-    // if (seconds < 10) {seconds = "0"+seconds;}
-// 
-    // var time;    
-    // if ( parseInt(hours) <=0 )	time = minutes+':'+seconds;
-	// if ( parseInt(minutes) <=0 ) time = "0"+':'+seconds;
-	// else 						time = hours+':'+minutes+':'+seconds;
-//    
-    // return time;
-// }
 function secondSlider_Handler() {
+													console.log('secondSlider_Handler');
 	$("#secondSlider").on("input", function() {
 		// get value as sliding - use for show brief images & find witch sound to use
 													console.log("input");
@@ -190,8 +200,10 @@ function secondSlider_Handler() {
 													console.log("This second located in: " + soundContain);
 													console.log("Need to seek from start: " + calcSeek);
 		
-		// find if in this second there is something to show
-		findView();
+		if (!minimalMode) {
+			// find if in this second there is something to show
+			findView();
+		}
 	});
 	
 	$("#secondSlider").on("change", function() {
@@ -237,13 +249,12 @@ function playAudio_withSeek(timeToSeek, seekAnotherSong) {
 /**************************************************************************************************/
 
 // Media Player using HTML5's Media API
-
 function initialiseMediaPlayer() {
 	console.log("initialiseMediaPlayer");
 	
 	// Get handles to each of the buttons and required elements
-	playPauseBtn = document.getElementById('play');
-	muteBtn = document.getElementById('mute-button');
+	playPauseBtn = $('#play')[0];
+	muteBtn = $('#mute')[0];
 
 	// Hide the browser's default controls
 	mediaSound.controls = false;
@@ -258,7 +269,7 @@ function initialiseMediaPlayer() {
 		}
 	};
 	mediaSound.onplay = function() {						console.log("my onPlay");
-		showOp();
+		if (!minimalMode) showOp();
 		changeButtonType(playPauseBtn, 'pause');
 		starttimeMS = new Date();
 
@@ -271,7 +282,7 @@ function initialiseMediaPlayer() {
 		}
 	};
 	mediaSound.onpause = function() {											console.log("my onPause");
-		showOp();
+		if (!minimalMode) showOp();
 		changeButtonType(playPauseBtn, 'play');
 		clearInterval(interval);
 		interval = null;
@@ -312,6 +323,8 @@ function initialiseMediaPlayer() {
 	};
 }
 
+// Use only in playmovie.html
+// use to find views to show at input range current second
 function findView(){
 	console.log("findView");
 	//init layout
@@ -377,8 +390,10 @@ function stopPlayer() {
 	mediaSound.currentTime = 0;
 	// Reset the progress bar to 0
 	$("#secondSlider").val(0);
-	$('#viewPhotos').attr("src" ,'includes/img/default_poster.png');
-	$("#viewerTag").empty();
+	if (!minimalMode) {
+		$('#viewPhotos').attr("src" ,'includes/img/default_poster.png');
+		$("#viewerTag").empty();
+	}
 	changeProgressColor(0);
 }
 
@@ -445,8 +460,10 @@ function canPlayVideo(ext) {
 function resetPlayer() {
 	// Reset the progress bar to 0
 	$("#secondSlider").val(0);
-	$('#viewPhotos').attr("src" ,'includes/img/default_poster.png');
-	$("#viewerTag").empty();
+	if (!minimalMode) {
+		$('#viewPhotos').attr("src" ,'includes/img/default_poster.png');
+		$("#viewerTag").empty();
+	}
 	changeProgressColor(0);
 		
 	// Move the media back to the start
@@ -462,7 +479,7 @@ function changeProgressColor(val){
 /***********************************************************************************************/
 /***********************************************************************************************/
 /***********************************************************************************************/
-
+// Use only in playmovie.html
 function showOp(){
 	//append img child for 'view' section
 	
@@ -501,25 +518,29 @@ function showOp(){
 	}, 400);
 }
 
+// Use only in playmovie.html
 function show_edit_button_if_admin(){
 	if (isAdmin()){
 		$('#admin_button_holder').html("<input type='button' value='edit' onclick='goto_editPage();'>");
 	}
 }
 
-
+// Use only in playmovie.html
 function goto_editPage(){
 	window.location.href = "editVideo.html?videoId="+videoJson.sessionId;
 }
 
-
+// Use only in playmovie.html
 // Vote
 function isUserVote(){
 	
 }
+
+// Use only in playmovie.html
 function get_user_vote(){
 	
 }
+// Use only in playmovie.html
 function what_user_vote(){
 	if (isUserVote()){
 		if ( get_user_vote() == 'true' ){
@@ -529,18 +550,22 @@ function what_user_vote(){
 		}
 	}
 }
+// Use only in playmovie.html
 function check_if_user_vote_before(){
 		
 }
+// Use only in playmovie.html
 function disable_vote(){
 	
 }
+// Use only in playmovie.html
 function set_user_vote() {
 	if ( check_if_user_vote_before() ) {
 		disable_vote();
 	}
 	vote();
 }
+// Use only in playmovie.html
 function vote(val){
 	if (val == 1){
 		$('#voteUp').css('background', 'no-repeat url(//s.ytimg.com/yts/imgbin/www-hitchhiker-vflynt-iQ.webp) -279px -142px');
@@ -548,4 +573,3 @@ function vote(val){
 		$('#voteDownLink').css('opacity', 1);
 	}
 }
-

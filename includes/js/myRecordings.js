@@ -7,13 +7,14 @@ function signinCallback(authResult) {
 				'userId' : 'me'
 			});
 			request.execute(function(resp) {
-				console.log(resp);
-				$("#profilePic").attr("src", resp.image.url);
-
+				$('#topNavProfilePic').css('background-image', "url("+ resp.image.url + ")");
+				$("#userName").text(resp.displayName);
 			});
 		});
 
-		console.log(authResult);
+		$("#signOut").click(function() {
+			gapi.auth.signOut();
+		});
 
 	} else {
 		/*	Update the app to reflect a signed out user
@@ -22,9 +23,11 @@ function signinCallback(authResult) {
 		 "access_denied" - User denied access to your app
 		 "immediate_failed" - Could not automatically log in the user */
 		console.log('Sign-in state: ' + authResult['error']);
+		window.location.href = "index.html";
 
 	}
 }
+
 
 
 $(window).load(function() {

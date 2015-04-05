@@ -5,21 +5,52 @@
 		<!-- jquery -->
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script src='includes/js/shared_functions.js'></script>
+		<script src='includes/js/bootstrap.js'></script>
 		<!-- lecturus js - sound Handler -->
 		<script src="includes/js/playmovie.js"></script>
+		<script src="includes/js/lightbox.min.js"></script>
+		<link rel='stylesheet' href='includes/css/bootstrap.css'>
 		<link rel='stylesheet' href='includes/css/media-player.css'>
 		<link rel='stylesheet' href='includes/css/media-player-controls.css'>
-		<link rel="stylesheet" href="includes/css/main.css">
+		<!-- <link rel="stylesheet" href="includes/css/main.css"> -->
+		<!-- Google API -->
+		<meta name="google-signin-clientid" content="3064416766-5qgmie4thvudo3nh6oofnkvd52i8loed.apps.googleusercontent.com" />
+		<meta name="google-signin-cookiepolicy" content="single_host_origin" />
+		<meta name="google-signin-callback" content="signinCallback" />
+		<meta name="google-signin-requestvisibleactions" content="https://schema.org/AddAction" />
+		<meta name="google-signin-scope" content="https://www.googleapis.com/auth/plus.login" />
+		<script src="https://apis.google.com/js/client:platform.js" async defer></script>
+		<!-- End of Google API -->
 		<title>Show movie</title>
 	</head>
 	<body>
-		<nav id="profileTopNav">
-			<section class="profilePicture"></section>
-			<section id="userName"></section>
-			<section id="otherOptions"></section>
-			<div class="clear"></div>
+		<nav id="playerTopNav" class="navbar">
+				<section id="topNavProjectTitle">
+				<a href="index.html">Lecturus</a>
+			</section>
+			<section id="userTopNavDetailsWrapper">
+				<section id="topNavProfilePic" class="profilePic"></section>
+
+				<div id="navDropDown" class="dropdown">
+					<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+						<span id="userName"></span>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+						<li role="presentation">
+							<a role="menuitem" tabindex="-1" href="#">Profile</a>
+						</li>
+						<li id="signOut" role="presentation">
+							<a role="menuitem" tabindex="-1" href="#">Sign out</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="clear"></div>
+			</section>
 		</nav>
-		
+
 		<div id="wrapper">
 			<section id="media-player">
 				<!-- Titles -->
@@ -29,7 +60,7 @@
 					<section id='videoTitle'></section>
 					<div class='clear'></div>
 				</article>
-	
+
 				<!-- Viewer -->
 				<section id='viewContainer'>
 					<img id="viewOp">
@@ -39,26 +70,23 @@
 					<source id="audioSrc" src="" type="audio/mpeg">
 					Your browser does not support the video tag.
 				</audio>
-				
+
 				<!-- Slider -->
 				<section id='viewerBottom'>
 					<section id='slider'>
 						<input class='sliderRange' type="range" id="secondSlider" value="0" min="0" max="0" >
-						<section id='showtime'>0</section>
+						<section id='showtime'>
+							0:00
+						</section>
 					</section>
 					<section id='viewerDescription'>
 						<section id='viewerTag'></section>
 						<hr class='splitter'>
 						<section id='voteContainerLine'>
 							<section id='voteContainer'>
-								<a href='#' class='voteLinks' id='voteDownLink' onclick="set_user_vote(-1)">
-									<section class='voteNumber' id='voteDown_val'></section>
-									<section class='votePic' id='voteDown'></section>
-								</a>
-								<a href='#' class='voteLinks' id='voteUpLink' onclick="set_user_vote(1);">
-									<section class='votePic' id='voteUp'></section>
-									<section class='voteNumber' id='voteUp_val'></section>
-								</a>
+								<a href='#' class='voteLinks' id='voteDownLink' onclick="set_user_vote(-1)"> <section class='voteNumber' id='voteDown_val'></section> <section class='votePic' id='voteDown'></section> </a>
+								<a href='#' class='voteLinks' id='voteUpLink' onclick="set_user_vote(1);"> <section class='votePic' id='voteUp'></section> <section class='voteNumber' id='voteUp_val'></section> </a>
+								<input type='button' value='open image' onclick='console.log("open the last image with light-box")'>
 								<div class="clear"></div>
 							</section>
 						</section>
@@ -66,18 +94,29 @@
 				</section>
 				<!-- Controls -->
 				<section id='media-controls'>
-					<button id='replay' class='mediaControls' title='replay' onclick='replayMedia();'>Replay</button>	
-					<button id='play' class='mediaControls' title='play' onclick='togglePlayPause();'>Play</button>
-					<button id='stop' class='mediaControls' title='stop' onclick='stopPlayer();'>Stop</button>
-					<button id='volume-plus' class='mediaControls' title='increase volume' onclick='changeVolume("+");'>Increase volume</button>
-					<button id='volume-minus' class='mediaControls' title='decrease volume' onclick='changeVolume("-");'>Decrease volume</button>
-					<button id='mute' class='mediaControls' title='mute' onclick='toggleMute("true");'>Mute</button>
+					<button id='replay' class='mediaControls' title='replay' onclick='replayMedia();'>
+						Replay
+					</button>
+					<button id='play' class='mediaControls' title='play' onclick='togglePlayPause();'>
+						Play
+					</button>
+					<button id='stop' class='mediaControls' title='stop' onclick='stopPlayer();'>
+						Stop
+					</button>
+					<button id='volume-plus' class='mediaControls' title='increase volume' onclick='changeVolume("+");'>
+						Increase volume
+					</button>
+					<button id='volume-minus' class='mediaControls' title='decrease volume' onclick='changeVolume("-");'>
+						Decrease volume
+					</button>
+					<button id='mute' class='mediaControls' title='mute' onclick='toggleMute("true");'>
+						Mute
+					</button>
 				</section>
-				
-				
+
 				<!-- Sub-titles -->
 				<h2 id="tag"></h2>
-				
+
 				<section id='admin_button_holder'></section>
 			</section>
 		</div>

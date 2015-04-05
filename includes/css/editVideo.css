@@ -5,182 +5,225 @@
 	color: white;
 }
 
-.profilePicture {
-	width: 50px;
-	height: 50px;
-	border-radius: 25px;
-	-webkit-border-radius: 25px;
-	-moz-border-radius: 25px;
+/*  --------------------------  */
+.profilePic {
+	width: 35px;
+	height: 35px;
+	background: #1C454B;
+	-moz-border-radius: 17.5px;
+	-webkit-border-radius: 17.5px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
 	float: left;
 }
 
-#userName {
-	width: 250px;
-	font-family: Arial, Helvetica, sans-serif;
-	margin: 15px 0px 0px 5px;
-	float: left;
+#topNavProfilePic {
+	margin-right: 3px;
 }
 
-#otherOptions {
-	width: 250px;
-	background-color: green;
+#topNavProjectTitle a {
+	color: #FFFFFF;
+	font-size: 18px;
+	float: left;
+	margin: 10px 0 0 20px;
+	text-decoration: none;
+}
+
+#userTopNavDetailsWrapper {
+	margin-right: 30px;
 	float: right;
+	width: 200px;
 }
+
+#navDropDown {
+	display: inline;
+}
+
+/*  -------------------------  */
 
 .clear {
 	clear: both;
 }
 
-#editVideoBody{
+#editVideoBody {
 	background-color: #C1C4C4;
 }
 
-#editVideoBody #editWrapper{
-	padding-top: 30px;
-	width: 1150px;
-	margin:0 auto;
+#editVideoBody #editWrapper {
+
+	width: 1060px;
+	margin: 0 auto;
 }
 
-#editWrapper #videoDetailsEditorHolder{
-	margin:0 auto;
+#editWrapper #videoDetailsEditorHolder {
+	margin: 0 auto;
 	width: 900px;
 	background-color: #B2B2B2;
 }
 
-#videoDetailsEditorHolder #leftInputsHolder{
+#videoDetailsEditorHolder #leftInputsHolder {
 	width: 440px;
-	float: left; 
+	float: left;
 	padding-left: 10px;
 	padding-top: 10px;
 }
 
-#videoDetailsEditorHolder #rightInputsHolder{
+#videoDetailsEditorHolder #rightInputsHolder {
 	width: 440px;
 	float: left;
 	padding-top: 10px;
 }
 
-#editWrapper #editPanelWrapper{
-	margin:0 auto;
+#editWrapper #editPanelWrapper {
+	margin: 0 auto;
 	width: 900px;
-	
 	background-color: #B2B2B2;
 }
 
 /*Start of Public/Private Switch code*/
 
 .onoffswitch {
-    position: relative; width: 104px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+	position: relative;
+	width: 104px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 }
 .onoffswitch-checkbox {
-    display: none;
+	display: none;
 }
 .onoffswitch-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #999999; border-radius: 26px;
+	display: block;
+	overflow: hidden;
+	cursor: pointer;
+	border: 2px solid #999999;
+	border-radius: 26px;
 }
 .onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
-    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
-    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
+	display: block;
+	width: 200%;
+	margin-left: -100%;
+	-moz-transition: margin 0.3s ease-in 0s;
+	-webkit-transition: margin 0.3s ease-in 0s;
+	-o-transition: margin 0.3s ease-in 0s;
+	transition: margin 0.3s ease-in 0s;
 }
 .onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 29px; padding: 0; line-height: 29px;
-    font-size: 15px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+	display: block;
+	float: left;
+	width: 50%;
+	height: 29px;
+	padding: 0;
+	line-height: 29px;
+	font-size: 15px;
+	color: white;
+	font-family: Trebuchet, Arial, sans-serif;
+	font-weight: bold;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }
 .onoffswitch-inner:before {
-    content: "Public";
-    padding-left: 10px;
-    background-color: #7DD4AE; color: #FFFFFF;
+	content: "Public";
+	padding-left: 10px;
+	background-color: #7DD4AE;
+	color: #FFFFFF;
 }
 .onoffswitch-inner:after {
-    content: "Private ";
-    padding-right: 10px;
-    background-color: #EDA8A8; color: #707070;
-    text-align: right;
+	content: "Private ";
+	padding-right: 10px;
+	background-color: #EDA8A8;
+	color: #707070;
+	text-align: right;
 }
 .onoffswitch-switch {
-    display: block; width: 14px; margin: 7.5px;
-    background: #FFFFFF;
-    border: 2px solid #999999; border-radius: 26px;
-    position: absolute; top: 0; bottom: 0; right: 71px;
-    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
-    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
+	display: block;
+	width: 14px;
+	margin: 7.5px;
+	background: #FFFFFF;
+	border: 2px solid #999999;
+	border-radius: 26px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 71px;
+	-moz-transition: all 0.3s ease-in 0s;
+	-webkit-transition: all 0.3s ease-in 0s;
+	-o-transition: all 0.3s ease-in 0s;
+	transition: all 0.3s ease-in 0s;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
+	margin-left: 0;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
+	right: 0px;
 }
 /*End of Public/Private Switch code*/
 
-.inputHolder{
+.inputHolder {
 	width: 450px;
 	margin-bottom: 3px;
 }
 
-.inputHolder .editInputLabel{
+.inputHolder .editInputLabel {
 	width: 100px;
-	
 }
 
-.inputHolder #editLectureTitleInput{
+.inputHolder #editLectureTitleInput {
 	width: 303px;
 }
 
-.inputHolder .editSelect{
+.inputHolder .editSelect {
 	width: 200px;
 }
 
-.inputHolder #privacyLeft{
+.inputHolder #privacyLeft {
 	width: 100px;
 }
 
-.inputHolder #privacyRight{
+.inputHolder #privacyRight {
 	width: 330px;
 	position: relative;
 	bottom: 29px;
 	left: 100px;
 }
 
-#editWrapper #draggableImagesHolder{
+#editWrapper #draggableImagesHolder {
 	width: 900px;
 	height: 170px;
 	background-color: #6A6A6A;
 	position: relative;
 }
 
-#draggableImagesHolder img{
+#draggableImagesHolder img {
 	width: 150px;
 	height: 150px;
 }
 
-#editWrapper #playerHolder{
+#editWrapper #playerHolder {
 	width: 900px;
 	height: 25px;
 	padding-top: 8px;
-	
-	
 	background-color: #3F3F3F;
 }
 
-#editWrapper #draggableTagsHolder{
+#editWrapper #draggableTagsHolder {
 	width: 900px;
-	height: 50px;
+	height: 100px;
 	background-color: #6A6A6A;
 	position: relative;
 }
 
 #draggableImagesHolder .draggableImage {
 	position: absolute;
-	width: 150px;
-	height: 150px;
-	background: yellow;
+	width: 151px;
+	height: 151px;
 	display: inline-block;
-	border: 1px solid #ffffff;
+}
+
+#draggableImagesHolder .draggableImage:hover {
+	z-index: 555555;
+	border-top: 4px solid #6A6A6A;
 }
 
 #draggableTagsHolder .draggableTag {
@@ -192,46 +235,49 @@
 	border: 1px solid #000000;
 }
 
+#draggableTagsHolder .draggableTag:hover {
+	z-index: 555555;
+	border-top: 4px solid #6A6A6A;
+}
 
-
-.draggableTag #tagEditButton{
+.draggableTag #tagEditButton {
 	display: inline;
 }
 
-.draggableTag #confirmOrCancelButtons{
+.draggableTag #confirmOrCancelButtons {
 	padding: 3px 0 3px 0;
 	float: left;
 	display: none;
 }
 
-.draggableTag  #tagTextHolder{
+.draggableTag  #tagTextHolder {
 	float: left;
 	color: white;
 }
 
-#tagTextHolder #editTagTextArea{
+#tagTextHolder #editTagTextArea {
 	color: black;
 }
 
-.draggableTag{
+.draggableTag {
 	padding: 5px;
 }
 
-.draggableTag #addNewTagHolder{
+.draggableTag #addNewTagHolder {
 	width: 900px;
 	height: 100px;
 	background-color: #373446;
 }
 
-#playerHolder .slider{
+#playerHolder .slider {
 	width: 900px;
 }
 
-#editConfirmationButtons{
-	margin-top:100px;
+#editConfirmationButtons {
+	margin-top: 100px;
 	height: 30px;
 	text-align: center;
 }
-.clear{
+.clear {
 	clear: both;
 }

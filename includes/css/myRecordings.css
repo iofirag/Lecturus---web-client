@@ -26,21 +26,41 @@ header, footer, nav, main, section, article, aside {
 	color: white;
 }
 
-.profilePicture {
-	width: 40px;
-	height: 40px;
-	border-radius: 20px;
-	-webkit-border-radius: 20px;
-	-moz-border-radius: 20px;
+/*  --------------------------  */
+.profilePic {
+	width: 35px;
+	height: 35px;
+	background: #1C454B;
+	-moz-border-radius: 17.5px;
+	-webkit-border-radius: 17.5px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
 	float: left;
 }
 
-#userName {
-	width: 250px;
-	font-family: Arial, Helvetica, sans-serif;
-	margin: 15px 0px 0px 5px;
-	float: left;
+#topNavProfilePic {
+	margin-right: 3px;
 }
+
+#topNavProjectTitle a {
+	color: #FFFFFF;
+	font-size: 18px;
+	float: left;
+	margin: 10px 0 0 20px;
+	text-decoration: none;
+}
+
+#userTopNavDetailsWrapper {
+	margin-right: 30px;
+	float: right;
+	width: 200px;
+}
+
+#navDropDown {
+	display: inline;
+}
+
+/*  -------------------------  */
 
 
 
