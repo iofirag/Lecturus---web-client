@@ -19,7 +19,6 @@ var currentPos,
     currTagInitSecond,
     videoId;
 
-
 function signinCallback(authResult) {
 	if (authResult['status']['signed_in']) {
 		gapi.client.load('plus', 'v1', function() {
@@ -27,7 +26,7 @@ function signinCallback(authResult) {
 				'userId' : 'me'
 			});
 			request.execute(function(resp) {
-				$('#topNavProfilePic').css('background-image', "url("+ resp.image.url + ")");
+				$('#topNavProfilePic').css('background-image', "url(" + resp.image.url + ")");
 				$("#userName").text(resp.displayName);
 			});
 		});
@@ -50,10 +49,9 @@ function signinCallback(authResult) {
 
 
 $(document).ready(function() {
-	var videoId = "";
-	if (getParameterByName("videoId")!=''){
+	if (getParameterByName("videoId") != '') {
 		videoId = getParameterByName("videoId");
-		
+
 		/*Get list of courses */
 		$.ajax({
 			type : "POST",
@@ -74,7 +72,7 @@ $(document).ready(function() {
 					// videoId : "123"
 					// },
 					success : function(data) {
-						if (data.status==1){
+						if (data.status == 1) {
 							// Save this object for editing.
 							videoJson = data.info;
 							
@@ -82,12 +80,12 @@ $(document).ready(function() {
 							$(".slider").attr("max", videoJson.totalSecondLength);
 							oneStep = $(".slider").width() / videoJson.totalSecondLength;
 							rangeValue = parseInt($(".slider").attr("value"));
-		
+
 							console.log(videoJson);
-		
+
 							//set degrees list
 							$.each(coursesJson.degrees, function(key, val) {
-		
+
 								if (val.id == videoJson.degree) {
 									$("#listOfDegrees").append('<option value="' + key + '" selected>' + val.name + '</option>');
 									degreeSelectedPosition = key;
@@ -96,32 +94,30 @@ $(document).ready(function() {
 									$("#listOfDegrees").append('<option value="' + key + '">' + val.name + '</option>');
 								}
 							});
-		
+
 							//Degrees list change event
 							$('#listOfDegrees').change(function() {
 								courseSelectedPosition = 0;
-		
+
 								//Selected degree position in the array is:
 								degreeSelectedPosition = $(this).val();
-		
+
 								//Update the VideoJson value for degree
 								videoJson.degree = coursesJson.degrees[degreeSelectedPosition].id;
 								console.log(videoJson);
-		
+
 								//update Courses list
 								updateCoursesList(degreeSelectedPosition);
-								
-								
-		
+
 								//Clear lecturers list
 								$("#listOfLecturers").empty();
-		
+
 								//set the lecturer from the first course of the degree selected
-								
+
 								//$("#listOfLecturers").append('<option value="' + 0 + '" selected>' + coursesJson.degrees[degreeSelectedPosition].courses[courseSelectedPosition].lecturer + '</option>');
-									updateLecturersList(degreeSelectedPosition, courseSelectedPosition);
+								updateLecturersList(degreeSelectedPosition, courseSelectedPosition);
 							});
-		
+
 							//set courses list
 							$.each(coursesJson.degrees[degreeSelectedPosition].courses, function(key, val) {
 								if (val.id == videoJson.course) {
@@ -132,66 +128,66 @@ $(document).ready(function() {
 									$("#listOfCourses").append('<option value="' + key + '">' + val.name + '</option>');
 								}
 							});
-		
+
 							//Courses list change event
 							$('#listOfCourses').change(function() {
-								
+
 								//Selected course position in the array is:
 								courseSelectedPosition = $(this).val();
-		
+
 								//save the lecturer of the first course in case the user doesnt choose it because it appears first in the lecturers list
 								videoJson.lecturer = coursesJson.degrees[degreeSelectedPosition].courses[courseSelectedPosition].lecturer;
-		
+
 								//Update the VideoJson value for degree
-								
+
 								videoJson.course = coursesJson.degrees[degreeSelectedPosition].courses[courseSelectedPosition].id;
 								console.log(videoJson);
-		
+
 								//Clear lecturers list because we chose a new course
 								$("#listOfLecturers").empty();
-		
+
 								//populate  lecturers list according to the chosen course
 								updateLecturersList(degreeSelectedPosition, courseSelectedPosition);
 							});
-		
+
 							//set lecturer list
 							updateLecturersList(degreeSelectedPosition, courseSelectedPosition);
-		
+
 							//Set title input
 							$("#editLectureTitleInput").val(videoJson.title);
-		
+
 							//Set decription
 							$("#descriptionLectureInput").val(videoJson.description);
-		
-							//Set privacy switch
-							if (videoJson.privacy == true) {
-								$("#myonoffswitch").prop('checked', false);
-		
-							} else if (videoJson.privacy == false) {
-								$("#myonoffswitch").prop('checked', true);
-							}
 							
-							console.log("privacy = ", $("#myonoffswitch").prop('checked'));
-		
-							$("#onoffswitch").on("click", function() {
+							//Set privacy switch
+							if (videoJson.public == "true") {
+								$("#myonoffswitch").prop('checked', true);
+
+							} else if (videoJson.public == "false") {
+								$("#myonoffswitch").prop('checked', false);
+							}
+
+							
+
+							$(".onoffswitch-label").on("click", function() {
 								console.log("clicked");
-								if ($("#myonoffswitch").prop('checked') == false) {
+								if ( $("#myonoffswitch").prop('checked')) {
 									$("#myonoffswitch").prop('checked', true);
-									videoJson.privacy = false;
-									console.log(videoJson.privacy);
-								} else if ($("#myonoffswitch").prop('checked')) {
-									$("#myonoffswitch").prop('checked', false);
-									ideoJson.privacy = true;
-									console.log(videoJson.privacy);
+									videoJson.public = false;
+									console.log(videoJson.public);
+								} else  {
+									$("#myonoffswitch").prop('checked' , false);
+									videoJson.public = true;
+									console.log(videoJson.public);
 								}
-								;
-		
+								
+
 							});
-		
+
 							//Set draggable images & Set draggable tags
 							$.each(videoJson.elements, function(key, val) {
 								currTagInitSecond = key;
-		
+
 								if (val.photo) {
 									$("<section>", {
 										"html" : "<a href='" + val.photo.url + "' data-lightbox='image-" + key + "'><img class='img-thumbnail' src='" + val.photo.url + "'></a>",
@@ -200,12 +196,12 @@ $(document).ready(function() {
 										"css" : {
 											"left" : oneStep * key
 										}
-		
+
 									}).appendTo("#draggableImagesHolder");
 								}
 								if (val.tags) {
 									$.each(val.tags, function(key, val) {
-		
+
 										$("<section>", {
 											"id" : "tagPos" + key + "Sec" + currTagInitSecond,
 											"class" : "draggableTag",
@@ -217,7 +213,7 @@ $(document).ready(function() {
 									});
 								}
 							});
-		
+
 							$(".draggableImage, .draggableTag").draggable({
 								axis : "x",
 								containment : "#editWrapper", //The parent element that contains the draggable elements
@@ -232,83 +228,81 @@ $(document).ready(function() {
 									$(".slider").attr("value", moveTo);
 								}
 							});
-		
+
 							//Draggable mouseup event handler
 							//Here we update an image.
 							$(".draggableImage, .draggableTag").on("mouseup", (function() {
 								//Get the value of the slider when an object is released after beeing dragged
 								moveElementToThisSecond = parseInt($(".slider").attr("value"), 10);
-		
+
 								//In case a picture is dragged
 								if ($(this).hasClass("draggableImage")) {
 									//Get the image id of dragged image
 									imageId = $(this).attr("id").split("image");
 									console.log("This is the image beeing dragged: " + videoJson.elements[imageId[1]].photo.url);
-		
+
 									//Save its value from the Json file representing a video
 									tmpPicture = videoJson.elements[imageId[1]].photo;
-		
+
 									//delete the image from the Json
 									delete videoJson.elements[imageId[1]].photo;
-		
+
 									if ( typeof videoJson.elements[imageId[1]].tags == "undefined") {
 										delete videoJson.elements[imageId[1]];
 									}
-		
+
 									//Set a new 'id' attribute to this element
 									$(this).attr("id", "image" + moveElementToThisSecond);
-		
+
 									//Add the image to the Json in its new position according to the seconds
 									//case 1: Current second has also a tag
 									if ( typeof videoJson.elements[moveElementToThisSecond] != "undefined") {
 										videoJson.elements[moveElementToThisSecond]['photo'] = tmpPicture;
-		
-										
-		
+
 										//case 3 : the element is empty. Add the photo
 									} else {
 										videoJson.elements[moveElementToThisSecond] = {
 											"photo" : tmpPicture
 										};
 									}
-		
+
 									console.log(moveElementToThisSecond);
 									console.log(videoJson);
 								}
-		
+
 								//In case a tag is dragged
 								else if ($(this).hasClass("draggableTag")) {
 									$(".draggableTag button").unbind("mouseup");
-									
+
 									tagSec = $(this).attr("id").split("Sec");
 									tagPos = tagSec[0].split("Pos");
-		
+
 									//Save its value from the Json file representing a tag
 									tmpTag = videoJson.elements[tagSec[1]].tags[tagPos[1]];
-		
+
 									//delete the tag from the Json
 									//delete videoJson.elements[tagSec[1]].tags[tagPos[1]];
-								console.log("dragged element atags array size = "+ videoJson.elements[tagSec[1]].tags.length );
+									console.log("dragged element atags array size = " + videoJson.elements[tagSec[1]].tags.length);
 									videoJson.elements[tagSec[1]].tags.splice(parseInt([tagPos[1]], 10), 1);
-		
+
 									//If 'Tags' array is empty then delete 'Tags' from the videoJson file
-									
-									console.log("dragged element atags array size = "+ videoJson.elements[tagSec[1]].tags.length );
+
+									console.log("dragged element atags array size = " + videoJson.elements[tagSec[1]].tags.length);
 									if (videoJson.elements[tagSec[1]].tags.length == 0) {
 										delete videoJson.elements[tagSec[1]].tags;
 									}
-		
+
 									//if 'Photo' and 'Tags array are empty , Delete the whole element from videoJson
 									if (( typeof videoJson.elements[tagSec[1]].tags == "undefined") && ( typeof videoJson.elements[tagSec[1]].photo == "undefined")) {
 										delete videoJson.elements[tagSec[1]];
 									}
-		
+
 									//Add the tag to the Json in its new position according to the seconds
 									//case 1: Current second already has some tags
 									if ( typeof videoJson.elements[moveElementToThisSecond] != "undefined") {
 										if ( typeof videoJson.elements[moveElementToThisSecond].tags != "undefined") {
 											videoJson.elements[moveElementToThisSecond].tags.push(tmpTag);
-		
+
 										} else {
 											//case 2 : the element doesnt have tags at all
 											//			but has an photo
@@ -320,26 +314,24 @@ $(document).ready(function() {
 													"photo" : [tmpPhoto]
 												};
 											}
-											
-											
-		
+
 										}
 									} else {
 										videoJson.elements[moveElementToThisSecond] = {
 											"tags" : [tmpTag]
 										};
 									}
-		
+
 									//Set a new 'id' attribute to this element
 									$(this).attr("id", "tagPos" + (videoJson.elements[moveElementToThisSecond].tags.length - 1) + "Sec" + moveElementToThisSecond);
-		
+
 									console.log(moveElementToThisSecond);
 									console.log(videoJson);
 								}
 								$("#secondSlider").trigger('input');
 								$("#secondSlider").trigger('change');
 							}));
-		
+
 							//edit a tag button click listener
 							$(".draggableTag #editButton").click(function() {
 								//Display confirm or cancel buttons
@@ -351,44 +343,44 @@ $(document).ready(function() {
 								refThis.empty();
 								var inputForTag = "<textarea id='editTagTextArea' rows='4' cols='20'>" + clickedTagText + "</textarea>";
 								$(this).parents().eq(2).children("#tagTextHolder").append(inputForTag);
-		
+
 							});
-		
+
 							//confirm tag edit button click listener
 							$(".draggableTag #confirmButton").click(function() {
 								var refThis = $(this).parents().eq(2).children("#tagTextHolder");
 								//Get text from the text area
 								var textAreaTagText = $('#editTagTextArea').val();
-		
+
 								//empty 'tagTextHolder'
 								refThis.empty();
-		
+
 								//Hide confirm or cancel buttons
 								$(this).parents().eq(1).children("#confirmOrCancelButtons").css("display", "none");
-		
+
 								//save new tag to videoJson file
 								var editedTagSec = $(this).parents().eq(2).attr("id").split("Sec");
 								var editedTagPos = editedTagSec[0].split("Pos");
-								videoJson.elements[editedTagSec[1]].tags[editedTagPos[1]].text =""+ textAreaTagText;
-		
+								videoJson.elements[editedTagSec[1]].tags[editedTagPos[1]].text = "" + textAreaTagText;
+
 								//add text of new tag to tagTextHolder section
 								refThis.text(textAreaTagText);
 							});
-		
+
 							//Cancel a tag edit button click listener
 							$(".draggableTag #cancelButton").click(function() {
 								var refThis = $(this).parents().eq(2).children("#tagTextHolder");
-		
+
 								//Hide confirm or cancel buttons
 								$(this).parents().eq(1).children("#confirmOrCancelButtons").css("display", "none");
-		
+
 								//empty 'tagTextHolder'
 								refThis.empty();
-		
+
 								//add text of old tag to tagTextHolder section
 								refThis.text(clickedTagText);
 							});
-		
+
 							//Deleta a tag button click listener
 							$(".draggableTag #deleteButton").click(function() {
 								//delete the tag from the Json
@@ -396,27 +388,27 @@ $(document).ready(function() {
 								tagSec = $(this).parents().eq(2).attr("id").split("Sec");
 								tagPos = tagSec[0].split("Pos");
 								delete videoJson.elements[tagSec[1]].tags[tagPos[1]];
-		
+
 								if (( typeof videoJson.elements[tagSec[1]].tags == "undefined") && ( typeof videoJson.elements[tagSec[1]].photo == "undefined")) {
 									delete videoJson.elements[tagSec[1]];
-		
+
 								} else if (( typeof videoJson.elements[tagSec[1]].tags == "undefined")) {
 									delete videoJson.elements[tagSec[1]].tags;
 								}
-		
+
 								//after deletion remove this section from the DOM
 								refThis.remove();
 								console.log(videoJson);
-		
+
 							});
-		
+
 							//save changes click listener
-		
+
 							$("#saveChanges").click(function() {
-								
+
 								//save text from 'title' input to the Json
 								videoJson.title = $("#editLectureTitleInput").val();
-		
+
 								//save text from description text area
 								videoJson.description = $("#descriptionLectureInput").val();
 								$.ajax({
@@ -434,13 +426,12 @@ $(document).ready(function() {
 										console.log("Cannot get video Json");
 									}
 								});
-		
-		
+
 							});
-							
+
 							// Media-player
 							run_media_player(data, true);
-						}else{
+						} else {
 							console.log('server status code are not 1');
 						}
 					},
@@ -448,12 +439,12 @@ $(document).ready(function() {
 						console.log("Cannot get video Json");
 					}
 				});
-	
+
 			},
 			error : function(objRequest, errortype) {
 			}
 		});
-	}else{
+	} else {
 		console.log('QueryString "?videoId=NUMBER" are missing!');
 	}
 });
@@ -469,7 +460,7 @@ function updateCoursesList(degreeSelectedPosition) {
 	//set courses list
 	$.each(coursesJson.degrees[degreeSelectedPosition].courses, function(key, val) {
 		//set the first course as the chosen one in case the user doesnt choose any
-		if(key == 0){
+		if (key == 0) {
 			videoJson.course = coursesJson.degrees[degreeSelectedPosition].courses[0].id;
 		}
 		$("#listOfCourses").append('<option value="' + key + '">' + val.name + '</option>');
