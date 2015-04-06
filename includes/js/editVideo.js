@@ -75,7 +75,7 @@ $(document).ready(function() {
 						if (data.status == 1) {
 							// Save this object for editing.
 							videoJson = data.info;
-							
+
 							rangeXzeroPosition = $(".slider").offset().left;
 							$(".slider").attr("max", videoJson.totalSecondLength);
 							oneStep = $(".slider").width() / videoJson.totalSecondLength;
@@ -158,7 +158,7 @@ $(document).ready(function() {
 
 							//Set decription
 							$("#descriptionLectureInput").val(videoJson.description);
-							
+
 							//Set privacy switch
 							if (videoJson.public == "true") {
 								$("#myonoffswitch").prop('checked', true);
@@ -167,20 +167,17 @@ $(document).ready(function() {
 								$("#myonoffswitch").prop('checked', false);
 							}
 
-							
-
 							$(".onoffswitch-label").on("click", function() {
 								console.log("clicked");
-								if ( $("#myonoffswitch").prop('checked')) {
+								if ($("#myonoffswitch").prop('checked')) {
 									$("#myonoffswitch").prop('checked', true);
 									videoJson.public = false;
 									console.log(videoJson.public);
-								} else  {
-									$("#myonoffswitch").prop('checked' , false);
+								} else {
+									$("#myonoffswitch").prop('checked', false);
 									videoJson.public = true;
 									console.log(videoJson.public);
 								}
-								
 
 							});
 
@@ -405,17 +402,17 @@ $(document).ready(function() {
 							//save changes click listener
 
 							$("#saveChanges").click(function() {
-
-								//save text from 'title' input to the Json
+								//save text from 'title' input to the json
 								videoJson.title = $("#editLectureTitleInput").val();
 
-								//save text from description text area
+								//save text from description text area to the json
 								videoJson.description = $("#descriptionLectureInput").val();
 								$.ajax({
 									type : "POST",
 									url : 'http://lecturus.herokuapp.com/session/updateSession/',
 									dataType : 'json',
-									data : videoJson,
+									contentType : "application/json",
+									data : JSON.stringify(videoJson),
 									success : function(data) {
 										if (data.status == 1) {
 											console.log(videoJson);
