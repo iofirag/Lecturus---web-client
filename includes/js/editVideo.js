@@ -211,20 +211,42 @@ $(document).ready(function() {
 								}
 							});
 
+							//calculate slider position when dragging images and tags
+							//update slider position
+							// make sure dragged element doesnt return a position that is out of bounds
 							$(".draggableImage, .draggableTag").draggable({
-								axis : "x",
+								axis : "x", //set movement only on x axis
 								containment : "#editWrapper", //The parent element that contains the draggable elements
 								drag : function(event, ui) {
 									currentPos = $(this).position();
-									//console.log("CURRENT: \nLeft: " + currentPos.left + "\nTop: " + currentPos.top);
-									moveTo = (currentPos.left + 75) * (videoJson.totalSecondLength / $(".slider").width());
+									moveTo = (currentPos.left + ($(this).width() / 2)) * (videoJson.totalSecondLength / $(".slider").width());
 									if (moveTo < 0)
 										moveTo = 0;
+									if (moveTo > videoJson.totalSecondLength) {
+										moveTo = videoJson.totalSecondLength;
+									}
 									// make sure the slider doesnt drag objects to negative values
 									$(".slider").val(moveTo);
 									$(".slider").attr("value", moveTo);
 								}
 							});
+
+							//setting a click event for a draggable tag.
+							//update slider position
+							// make sure clicked element doesnt return a position that is out of bounds
+							$(".draggableTag").on("click", (function() {
+								currentPos = $(this).position();
+								moveTo = (currentPos.left + ($(this).width() / 2)) * (videoJson.totalSecondLength / $(".slider").width());
+								if (moveTo < 0)
+									moveTo = 0;
+								if (moveTo > videoJson.totalSecondLength) {
+										moveTo = videoJson.totalSecondLength;
+								}
+								// make sure the slider doesnt drag objects to negative values
+								$(".slider").val(moveTo);
+								$(".slider").attr("value", moveTo);
+
+							}));
 
 							//Draggable mouseup event handler
 							//Here we update an image.
