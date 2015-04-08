@@ -9,8 +9,9 @@ header, footer, nav, main, section, article, aside {
 
 #myRecordingsWrapper{
 	width: 1200px;
+	min-height: 500px;
 	margin: 0 auto;
-	background-color: yellow;
+	background-color: #E0E1E1;
 }
 
 #myRecordingsBody {
@@ -36,6 +37,7 @@ header, footer, nav, main, section, article, aside {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	float: left;
+	margin-right: 2px;
 }
 
 #topNavProfilePic {
@@ -65,18 +67,19 @@ header, footer, nav, main, section, article, aside {
 
 
 #sideMenu{
-	height: 500px;
+	
 	width: 250px;
 	float: right;
 	padding: 10px;
-	background-color: #9A9C9C;
-	border-left: 1px solid #000000;
+	background-color: #E0E1E1;
+	
 }
 
 #videosWrapper{
 	float: left;
-	background-color: #9A9C9C;
-	height: 500px;
+	min-height: 500px;
+	background-color: #E0E1E1;
+	border-right: 1px solid #AEAFAF;
 	width: 950px;
 }
 
@@ -87,6 +90,55 @@ header, footer, nav, main, section, article, aside {
 
 .menuItem{
 	padding-left: 15px;
+}
+
+.singleVideoWrapper{
+	width: 200px;
+	margin: 0 auto;
+	background-color: #FFFFFF;
+	margin: 10px 0 20px 0;
+}
+
+.videoImage{
+	background: url("../img/staticLecturus.jpg");
+	background-size: cover;
+	width: 200px;
+	height: 150px;
+}
+
+.videoParticipants{
+	padding: 5px;
+	height: 45px;
+}
+
+.videoTitle{
+	padding: 2px;
+}
+
+.videoTitle a,a:hover,a:focus,a:active{
+	color: #337ab7;
+	text-decoration: none;
+}
+
+.videoDetails{
+	padding: 2px;
+}
+
+.videoViews{
+	padding: 2px;
+}
+
+.videoLecturer{
+	padding: 2px;
+}
+
+.videoRecordDate{
+	padding: 2px;
+}
+
+.editVideoButton a,a:hover,a:focus,a:active {
+	text-decoration: none;
+	color: #FFFFFF;
 }
 
 .clear {

@@ -9,9 +9,11 @@ header, footer, nav, main, section, article, aside {
 
 #conMainWrapper {
 	width: 1200px;
+	min-height: 500px;
 	margin: 0 auto;
-	background-color: yellow;
+	background-color: #E0E1E1;
 }
+
 
 #conMainBody {
 	background-color: #C1C4C4;
@@ -35,8 +37,8 @@ header, footer, nav, main, section, article, aside {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	float: left;
+	margin-right: 2px;
 }
-
 
 #topNavProfilePic {
 	margin-right: 3px;
@@ -62,19 +64,20 @@ header, footer, nav, main, section, article, aside {
 
 /*  -------------------------  */
 
-#sideMenu {
-	height: 500px;
+#sideMenu{
+	
 	width: 250px;
 	float: right;
 	padding: 10px;
-	background-color: #9A9C9C;
-	border-left: 1px solid #000000;
+	background-color: #E0E1E1;
+	
 }
 
-#videosWrapper {
+#videosWrapper{
 	float: left;
-	background-color: #9A9C9C;
-	height: 500px;
+	min-height: 500px;
+	background-color: #E0E1E1;
+	border-right: 1px solid #AEAFAF;
 	width: 950px;
 }
 

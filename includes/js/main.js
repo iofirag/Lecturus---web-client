@@ -55,13 +55,11 @@ function validateUser(email, resp) {
 			
 
 			//Redirect to User's main page
-			window.location.href = "conMain.html";
+			window.location.href = "home.html";
 		} else {
-			console.log(data);
-			alert("status= 0");
+			alert("Sorry but you musr register via our mobile application");
 		}
 	}, error : function(objRequest, errortype) {
-		console.log(errortype);
 		alert("Something went wrong..");
 	}
 });

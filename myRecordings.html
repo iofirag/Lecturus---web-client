@@ -5,9 +5,14 @@
 		<!-- jquery -->
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script src="includes/js/bootstrap.js"></script>
-		<script src="includes/js/myRecordings.js"></script>
+		<!-- Tooltips feature import -->	
+		<link rel="stylesheet" type="text/css" href="includes/css/tooltipster.css" />
+   		<script type="text/javascript" src="includes/js/jquery.tooltipster.min.js"></script>
+   		<link rel="stylesheet" href="includes/css/reset.css">
 		<link rel="stylesheet" href="includes/css/bootstrap.css">
 		<link rel="stylesheet" href="includes/css/myRecordings.css">
+		<script src="includes/js/myRecordings.js"></script>
+		
 		<!-- Google API -->
 		<meta name="google-signin-clientid" content="3064416766-5qgmie4thvudo3nh6oofnkvd52i8loed.apps.googleusercontent.com" />
 		<meta name="google-signin-cookiepolicy" content="single_host_origin" />
@@ -16,12 +21,17 @@
 		<meta name="google-signin-scope" content="https://www.googleapis.com/auth/plus.login" />
 		<script src="https://apis.google.com/js/client:platform.js" async defer></script>
 		<!-- End of Google API -->
+		<script>
+       	 $(document).ready(function() {
+        	   $('.tooltip').tooltipster();
+      	  });
+  	  </script>
 		<title>Lecturus</title>
 	</head>
 	<body id="myRecordingsBody">
 		<nav id="myRecordingsTopNav" class="navbar">
 			<section id="topNavProjectTitle">
-				<a href="index.html">Lecturus</a>
+				<a href="home.html">Lecturus - My recordings</a>
 			</section>
 			<section id="userTopNavDetailsWrapper">
 				<section id="topNavProfilePic" class="profilePic"></section>
@@ -52,7 +62,7 @@
 					Browse
 				</section>
 				<section class="menuItem">
-					<a href="conMain.html">Home</a>
+					<a href="home.html">Home</a>
 				</section>
 				<section class="menuItem">
 					Feed
@@ -73,8 +83,8 @@
 					<a href="myRecordings.html">My recordings</a>
 				</section>
 			</section>
-			<section id="videosWrapper">
-				currently under construction
+			<section id="videosWrapper" class="container">
+				
 			</section>
 			<div class="clear"></div>
 

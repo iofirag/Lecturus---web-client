@@ -2,16 +2,18 @@ var userEmail;
 
 function signinCallback(authResult) {
 	if (authResult['status']['signed_in']) {
+		initPage();
 		gapi.client.load('plus', 'v1', function() {
 			var request = gapi.client.plus.people.get({
 				'userId' : 'me'
 			});
 			request.execute(function(resp) {
-				$('#topNavProfilePic').css('background-image', "url("+ resp.image.url + ")");
+				$('#topNavProfilePic').css('background-image', "url(" + resp.image.url + ")");
 				$("#userName").text(resp.displayName);
 			});
 		});
 
+		//Sign out button click listener.
 		$("#signOut").click(function() {
 			gapi.auth.signOut();
 		});
@@ -28,3 +30,23 @@ function signinCallback(authResult) {
 	}
 }
 
+function initPage() {
+	$(document).ready(function() {
+		$.ajax({
+			type : "POST",
+			url : 'http://lecturus.herokuapp.com/session/getUserSessions',
+			data : {
+				"email" : "vandervidi@gmail.com"},
+			success : function(data) {
+				if (data.status == 1) {
+					console.log(data);
+				}
+			},
+			error : function(objRequest, errortype) {
+				console.log("Cannot get video Json");
+			}
+		});
+
+	});
+
+}
