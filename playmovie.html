@@ -55,7 +55,7 @@
 		<div id="wrapper">
 			<section id="media-player">
 				<!-- Titles -->
-				<article class='title'>
+				<article class='topTitle'>
 					<section id='degreeName'></section>
 					<section id='courseName'></section>
 					<section id='videoTitle'></section>
@@ -81,44 +81,65 @@
 						</section>
 					</section>
 					<section id='viewerDescription'>
+						<!-- Sub-titles -->
 						<section id='viewerTag'></section>
 						<hr class='splitter'>
+						
+						<!-- Controls -->
+						<section id='media-controls'>
+							<button id='replay' class='mediaControls' title='replay' onclick='replayMedia();'>
+								Replay
+							</button>
+							<button id='play' class='mediaControls' title='play' onclick='togglePlayPause();'>
+								Play
+							</button>
+							<button id='stop' class='mediaControls' title='stop' onclick='stopPlayer();'>
+								Stop
+							</button>
+							<button id='volume-plus' class='mediaControls' title='increase volume' onclick='changeVolume("+");'>
+								Increase volume
+							</button>
+							<button id='volume-minus' class='mediaControls' title='decrease volume' onclick='changeVolume("-");'>
+								Decrease volume
+							</button>
+							<button id='mute' class='mediaControls' title='mute' onclick='toggleMute("true");'>
+								Mute
+							</button>
+							<input type='button' value='[ ]' onclick='console.log("open the last image with light-box")'>
+						</section>
+						
 						<section id='voteContainerLine'>
 							<section id='voteContainer'>
 								<a href='#' class='voteLinks' id='voteDownLink' onclick="set_user_vote(-1)"> <section class='voteNumber' id='voteDown_val'></section> <section class='votePic' id='voteDown'></section> </a>
 								<a href='#' class='voteLinks' id='voteUpLink' onclick="set_user_vote(1);"> <section class='votePic' id='voteUp'></section> <section class='voteNumber' id='voteUp_val'></section> </a>
-								<input type='button' value='open image' onclick='console.log("open the last image with light-box")'>
 								<div class="clear"></div>
 							</section>
 						</section>
 					</section>
 				</section>
-				<!-- Controls -->
-				<section id='media-controls'>
-					<button id='replay' class='mediaControls' title='replay' onclick='replayMedia();'>
-						Replay
-					</button>
-					<button id='play' class='mediaControls' title='play' onclick='togglePlayPause();'>
-						Play
-					</button>
-					<button id='stop' class='mediaControls' title='stop' onclick='stopPlayer();'>
-						Stop
-					</button>
-					<button id='volume-plus' class='mediaControls' title='increase volume' onclick='changeVolume("+");'>
-						Increase volume
-					</button>
-					<button id='volume-minus' class='mediaControls' title='decrease volume' onclick='changeVolume("-");'>
-						Decrease volume
-					</button>
-					<button id='mute' class='mediaControls' title='mute' onclick='toggleMute("true");'>
-						Mute
-					</button>
-				</section>
-
-				<!-- Sub-titles -->
-				<h2 id="tag"></h2>
-
+				
 				<section id='admin_button_holder'></section>
+
+				<article id='videoDescriptionHolder'>
+					<h2 id='title'></h2>
+					<section id='profile'>
+						<section id='profileBody'></section>
+						<section id='uploadBy'></section>
+						<input type='button' value='Subscribe' />
+					</section><br>
+					
+					<section>participants:</section>
+					<ul id='participants'></ul>
+					<section id='addToPlaylist'></section>
+					<section id='shareIcons'></section>
+					<section id='viewTimes'></section><br>
+					
+					
+					<section id='date'></section>
+					<section id='organization'></section>
+					<section id='description'></section>
+				</article>
+				
 			</section>
 		</div>
 	</body>
