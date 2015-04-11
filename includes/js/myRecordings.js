@@ -71,6 +71,10 @@ function initPage() {
 														 +"	<section class='videoParticipants'>";
 														 
 														 //populate participants section
+														 //Add the admin picture
+					   								 	 appendString+= "<img class='profilePic tooltip' src='includes/img/personThumbnail.jpg' title='"+ val.owner +"' />";
+														 
+														 //Add other particimapnts picture
 														 $.each(val.participants, function(key, val){
 														 	appendString+= "<img class='profilePic tooltip' src='includes/img/personThumbnail.jpg' title='"+ val.user +"' />";
 														 });
@@ -97,6 +101,10 @@ function initPage() {
 														 +"	<section class='videoParticipants'>";
 														 
 														 //populate participants section
+														 //Add the admin picture
+					   								 	 appendString+= "<img class='profilePic tooltip' src='includes/img/personThumbnail.jpg' title='"+ val.owner +"' />";
+														 
+														 //Add other particimapnts picture
 														 $.each(val.participants, function(key, val){
 														 	appendString+= "<img class='profilePic tooltip' src='includes/img/personThumbnail.jpg' title='"+ val.user +"' />";
 														 });

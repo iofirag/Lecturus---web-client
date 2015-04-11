@@ -33,11 +33,14 @@ function signinCallback(authResult) {
 function initPage() {
 	$(document).ready(function() {
 		$.ajax({
-			type : "POST",
-			url : 'http://lecturus.herokuapp.com/session/getUserSessions',
+			type : "GET",
+			url : 'http://lecturus.herokuapp.com/session/getAllVideos',
 			data : {
-				"email" : "vandervidi@gmail.com"},
+				"email" : "vandervidi@gmail.com"
+				},
 			success : function(data) {
+				debugger
+				console.log(data);
 				if (data.status == 1) {
 					console.log(data);
 				}
