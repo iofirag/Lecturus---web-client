@@ -1,3 +1,4 @@
+var googleRes;
 var minimalMode=false;
 // Json get in ajax
 var videoJson;
@@ -43,6 +44,12 @@ function signinCallback(authResult) {
 			request.execute(function(resp) {
 				$('#topNavProfilePic').css('background-image', "url("+ resp.image.url + ")");
 				$("#userName").text(resp.displayName);
+				googleRes = resp;
+				
+				if (!minimalMode) {
+					// Check if admin
+					show_edit_button_if_admin();
+				}
 			});
 		});
 
@@ -114,11 +121,23 @@ function run_media_player(data, minimal_flag){
 		// set the title
 		$("#degreeName").html( get_name_from_degreeNum(videoJson.degree) );
 		$('#courseName').html('&nbsp;> ' + get_name_from_courseNum(videoJson.course) );
-		$('#videoTitle').html('&nbsp;> ' + videoJson.title);
-	
+		$('#videoTitle').html('&nbsp;> ' + videoJson.name);
+		
+		$('#title').text(videoJson.name);
+		$.each(videoJson.participants ,function(i,item){
+			$('#participants').append(item.user+'<br>');
+		});
+		$('#profileBody').attr("src" ,'includes/img/personThumbnail.jpg');
+		$('#uploadBy').text(videoJson.owner);
+
 		// Votes
 		$('#voteDown_val').html(videoJson.rating.negative.value);
 		$('#voteUp_val').text(videoJson.rating.positive.value);
+		
+		$('#date').text( dateFromTimestamp(videoJson.timestamp) );
+		$('#organization').text(','+videoJson.org);
+		$('#description').text(videoJson.description);
+		
 	}
 	//put the first audio
 	$("#audioSrc").attr("src", videoJson.audios[audio_timeCounter].url);
@@ -133,12 +152,15 @@ function run_media_player(data, minimal_flag){
 	// slider events handler
 	secondSlider_Handler();
 	
-	if (!minimalMode) {
-		// Check if admin
-		show_edit_button_if_admin();
-	}
+	
 }
 
+function dateFromTimestamp(timestamp){
+	months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+	var jsDate = new Date(timestamp*1000);
+	
+	return jsDate.toDateString();
+}
 function doEverySecond() {
 	//update slider
 	video_timeCounter = parseInt($("#secondSlider").val()) + 1;
@@ -522,7 +544,17 @@ function showOp(){
 function show_edit_button_if_admin(){
 	if (isAdmin()){
 		$('#admin_button_holder').html("<input type='button' value='edit' onclick='goto_editPage();'>");
+		console.log('show button');
 	}
+}
+function isAdmin(){
+	var hasFound = false;
+	$.each(googleRes.emails, function(i, item){
+		if (item.type == 'account' && item.value == videoJson.owner){
+			hasFound = true;
+		}
+	});
+	return hasFound;
 }
 
 // Use only in playmovie.html

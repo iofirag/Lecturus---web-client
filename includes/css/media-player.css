@@ -66,11 +66,6 @@ h1 {
 	color: #333;
 }
 
-.title {
-	/*padding-top:2px;
-	 padding-bottom: 2px;*/
-}
-
 #degreeName {
 	float: left;
 }
@@ -123,7 +118,7 @@ h1 {
 }
 
 #voteContainer {
-	/*float:right;*/
+	float:right;
 	/*height: 20px;*/
 	/*background-size: auto;*/
 	/*width: 20px;*/
@@ -206,6 +201,15 @@ h1 {
 	text-align: center;
 }
 
-.title{
+.topTitle{
 	color: #FFFFFF;
+	/*padding-top:2px;
+	 padding-bottom: 2px;*/
+}
+#title{
+	font-size: 120%;
+	font-weight: bold;
+}
+#videoDescriptionHolder{
+	float:left;
 }
