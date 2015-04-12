@@ -59,15 +59,16 @@ function initPage() {
 
 								$.each(data.userRecordings, function(key, val){
 									loopingKey = key;
-									debugger
 									
 									//Start new row of videos
 									if((key%3)== 0){
 										appendString +="<section class='row'> "
 														 +" <section class='col-md-4'>"
 														 +"	<section class='singleVideoWrapper'>"
-														 +"		 <a href='playmovie.html?videoId="+ val.sessionId +"'><section class='videoImage'><button type='button' class='editVideoButton btn btn-warning btn-sm'>"
-														 +" 	 <a href='editVideo.html?videoId="+ val.sessionId +"'>Edit</a></button></section></a>"
+														 +"		 <a href='playmovie.html?videoId="+ val.sessionId +"'><section class='videoImage'>"
+														 +"<button type='button' class='editVideoButton btn btn-warning btn-sm'>"
+														 +" 	 <a href='editVideo.html?videoId="+ val.sessionId +"'>Edit</a></button>"
+														 +"<section class='videotimeHolder'>" + secondsToTimeFormat(val.totalSecondLength) +"  </section></section></a>" 
 														 +"	<section class='videoParticipants'>";
 														 
 														 //populate participants section
@@ -96,8 +97,11 @@ function initPage() {
 										else{
 											appendString+=" <section class='col-md-4'>"
 														 +"	<section class='singleVideoWrapper'>"
-														 +"		 <a href='playmovie.html?videoId="+ val.sessionId +"'><section class='videoImage'><button type='button' class='editVideoButton btn btn-warning btn-sm'>"
-														 +" 	 <a href='editVideo.html?videoId="+ val.sessionId +"'>Edit</a></button></section></a>"
+														 +"		 <a href='playmovie.html?videoId="+ val.sessionId +"'><section class='videoImage'>"
+														 
+														 +"<button type='button' class='editVideoButton btn btn-warning btn-sm'>"
+														 +" 	 <a href='editVideo.html?videoId="+ val.sessionId +"'>Edit</a></button>"
+														 +"<section class='videotimeHolder'>" + secondsToTimeFormat(val.totalSecondLength) +"  </section></section></a>" 
 														 +"	<section class='videoParticipants'>";
 														 
 														 //populate participants section
@@ -119,7 +123,6 @@ function initPage() {
 														 +" </section>";
 										//if the next item opens a new row, Close current  row section		
 										if((key+1)%3 ==0){
-											debugger
 										appendString+= "</section>";				
 										}
 										
@@ -129,7 +132,6 @@ function initPage() {
 								
 									//Close last row at the end
 								if((loopingKey + 1) % 3 != 0){
-									debugger
 									appendString += "</section>";
 									//$("#videosWrapper").append(appendString);				
 										
@@ -156,4 +158,23 @@ function initPage() {
 
 	});
 	
+}
+
+
+function secondsToTimeFormat(secondsToConvert) {
+	hours = Math.floor(secondsToConvert / 3600);
+	secondsToConvert %= 3600;
+	minutes = Math.floor(secondsToConvert / 60);
+	seconds = secondsToConvert % 60;
+	if(seconds<10){
+		seconds = "0"+seconds;
+	}
+		if(minutes<10){
+		minutes = "0"+minutes;
+	}
+		if(hours<10){
+		hours = "0"+hours;
+	}
+	return hours + ":" + minutes +":" + seconds;
+
 }

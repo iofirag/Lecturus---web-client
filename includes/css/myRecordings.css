@@ -141,6 +141,15 @@ header, footer, nav, main, section, article, aside {
 	color: #FFFFFF;
 }
 
+.videotimeHolder{
+	display: inline;
+	background-color: #474747;
+	color: #B5B5B5;
+	position: relative;
+	top: 128px;
+	left: 103px;
+}
+
 .clear {
 	clear: both;
 }

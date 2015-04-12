@@ -76,14 +76,13 @@ function initPage() {
 							if (data.status == 1) {
 								// Save this object for editing.
 								videoJson = data.info;
-								delete videoJson.elements[0];
+								
 								rangeXzeroPosition = $(".slider").offset().left;
 								$(".slider").attr("max", videoJson.totalSecondLength);
 								oneStep = $(".slider").width() / videoJson.totalSecondLength;
 								rangeValue = parseInt($(".slider").attr("value"));
 
 								console.log(videoJson);
-
 								//set degrees list
 								$.each(coursesJson.degrees, function(key, val) {
 
@@ -155,7 +154,7 @@ function initPage() {
 								updateLecturersList(degreeSelectedPosition, courseSelectedPosition);
 
 								//Set title input
-								$("#editLectureTitleInput").val(videoJson.title);
+								$("#editLectureTitleInput").val(videoJson.name);
 
 								//Set decription
 								$("#descriptionLectureInput").val(videoJson.description);
@@ -425,7 +424,7 @@ function initPage() {
 
 								$("#saveChanges").click(function() {
 									//save text from 'title' input to the json
-									videoJson.title = $("#editLectureTitleInput").val();
+									videoJson.name = $("#editLectureTitleInput").val();
 
 									//save text from description text area to the json
 									videoJson.description = $("#descriptionLectureInput").val();
