@@ -160,10 +160,10 @@ function initPage() {
 								$("#descriptionLectureInput").val(videoJson.description);
 
 								//Set privacy switch
-								if (videoJson.public == "true") {
+								if (videoJson.public == true) {
 									$("#myonoffswitch").prop('checked', true);
 
-								} else if (videoJson.public == "false") {
+								} else if (videoJson.public == false) {
 									$("#myonoffswitch").prop('checked', false);
 								}
 
