@@ -48,7 +48,7 @@ function signinCallback(authResult) {
 				
 				if (!minimalMode) {
 					// Check if admin
-					show_edit_button_if_admin();
+					show_edit_button_if_admin_or_participants();
 				}
 			});
 		});
@@ -98,7 +98,7 @@ $(document).ready(function() {
 				},
 				error : function(objRequest, errortype) {
 					console.log(errortype);
-					console.log("Can't do because: " + error);
+					console.log("Can't do because: " + errortype);
 				}
 			});
 		}else{
@@ -125,11 +125,14 @@ function run_media_player(data, minimal_flag){
 		
 		$('#title').text(videoJson.name);
 		$.each(videoJson.participants ,function(i,item){
-			$('#participants').append(item.user+'<br>');
+			$('#participants').append(item.user+'<br>'); //'<img id="profileBody" class="profilePic tooltip"></img>'+
 		});
 		$('#profileBody').attr("src" ,'includes/img/personThumbnail.jpg');
-		$('#uploadBy').text(videoJson.owner);
-
+		$('#profileBody').attr('title',videoJson.owner);
+		
+		$('#ownerFullName').text('Ofir Aghai');
+		$('#viewTimes').text(videoJson.views);
+		
 		// Votes
 		$('#voteDown_val').html(videoJson.rating.negative.value);
 		$('#voteUp_val').text(videoJson.rating.positive.value);
@@ -182,12 +185,7 @@ function doEverySecond() {
 					$('#viewPhotos').attr("src" ,videoJson.elements[video_timeCounter].photo.url);
 					break;
 				case "tags":
-					$("#viewerTag").empty();
-					$.each( videoJson.elements[video_timeCounter].tags, function(index, val){
-						var finalText = '<section>'+val.text+'</section>';
-						$("#viewerTag").append(finalText);
-					});
-					
+					viewerTag(video_timeCounter);					
 					break;
 				}
 			});
@@ -350,7 +348,7 @@ function initialiseMediaPlayer() {
 function findView(){
 	console.log("findView");
 	//init layout
-	$("#viewerTag").empty();
+	 removeViewerTag();
 
 	var wasPic = false;
 	// Show the last pic (optional the text too if exist)
@@ -361,22 +359,12 @@ function findView(){
 				wasPic = true;
 												console.log("need to show image:"+ $('#viewPhotos').attr("src") );
 				if (videoJson.elements[i].hasOwnProperty('tags')) {
-					$("#viewerTag").empty();
-					$.each( videoJson.elements[i].tags, function(index, val){
-						//debugger;
-						var finalText = '<section>'+val.text+'</section>';
-						$("#viewerTag").append(finalText);
-					});
+					viewerTag(i);
 				}
 				break;
 			}
 			else if (videoJson.elements[i].hasOwnProperty('tags')) {
-				$("#viewerTag").empty();
-				$.each( videoJson.elements[i].tags, function(index, val){
-					//debugger;
-					var finalText = '<section>'+val.text+'</section>';
-					$("#viewerTag").append(finalText);
-				});
+				viewerTag(i);
 				//console.log('text in sec '+i+' is: '+videoJson.elements[i].tags.text);
 				// if (videoJson.elements[i].hasOwnProperty('photo')) {
 					// $('#viewPhotos').attr("src" ,videoJson.elements[i].photo.url);
@@ -389,6 +377,20 @@ function findView(){
 	if (!wasPic) $('#viewPhotos').attr("src", 'includes/img/default_poster.png');
 }
 
+function viewerTag(i){
+	 removeViewerTag();
+	 
+	$.each(videoJson.elements[i].tags, function(index, val) {
+		wasTag = true;
+		$('#voteContainerLine').removeAttr('hidden');
+		var finalText = '<section>' + val.text + '</section>';
+		$("#viewerTag").append(finalText);
+	}); 
+}
+function removeViewerTag(){
+	$('#voteContainerLine').attr('hidden','');
+	$("#viewerTag").empty();
+}
 function togglePlayPause() {
 	// If the mediaSound is currently paused or has ended
 	if (mediaSound.paused || mediaSound.ended) {
@@ -414,7 +416,7 @@ function stopPlayer() {
 	$("#secondSlider").val(0);
 	if (!minimalMode) {
 		$('#viewPhotos').attr("src" ,'includes/img/default_poster.png');
-		$("#viewerTag").empty();
+		 removeViewerTag();
 	}
 	changeProgressColor(0);
 }
@@ -450,8 +452,21 @@ function replayMedia() {
 
 // Updates a button's title, innerHTML and CSS class to a certain value
 function changeButtonType(btn, value) {
-	btn.title = value;
-	btn.innerHTML = value;
+	switch(value) {
+		case 'play':
+			btn.className = 'btn btn-sm glyphicon glyphicon-play';
+			break;
+		case 'pause':
+			btn.className = 'btn btn-sm glyphicon glyphicon-pause';
+			break;
+		case 'mute':
+			btn.className = 'btn btn-sm glyphicon glyphicon-volume-off';
+			break;
+		case 'unmute':
+			btn.className = 'btn btn-sm glyphicon glyphicon-volume-off btn-warning';
+			break;
+	}
+	btn.title = value;	
 	btn.id = value;
 }
 
@@ -484,7 +499,7 @@ function resetPlayer() {
 	$("#secondSlider").val(0);
 	if (!minimalMode) {
 		$('#viewPhotos').attr("src" ,'includes/img/default_poster.png');
-		$("#viewerTag").empty();
+		 removeViewerTag();
 	}
 	changeProgressColor(0);
 		
@@ -541,7 +556,7 @@ function showOp(){
 }
 
 // Use only in playmovie.html
-function show_edit_button_if_admin(){
+function show_edit_button_if_admin_or_participants(){
 	if (isAdmin()){
 		$('#admin_button_holder').html("<input type='button' value='edit' onclick='goto_editPage();'>");
 		console.log('show button');
@@ -549,9 +564,21 @@ function show_edit_button_if_admin(){
 }
 function isAdmin(){
 	var hasFound = false;
-	$.each(googleRes.emails, function(i, item){
-		if (item.type == 'account' && item.value == videoJson.owner){
-			hasFound = true;
+	$.each(googleRes.emails, function(i, gItem){
+		if (gItem.type == 'account'){
+			// is main Google+ mail
+			
+			if (gItem.value == videoJson.owner){	
+				// is admin
+				hasFound = true;
+			}else {
+				$.each(videoJson.participants, function(i, participantsEmail){	
+					if (gItem.value == participantsEmail.user){
+						// is one of participants
+						hasFound = true;
+					}
+				});
+			}
 		}
 	});
 	return hasFound;

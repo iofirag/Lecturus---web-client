@@ -82,38 +82,27 @@
 					</section>
 					<section id='viewerDescription'>
 						<!-- Sub-titles -->
-						<section id='viewerTag'></section>
+						<section id='viewerTagContainer'>
+							<section id='viewerTag'></section>
+							<section id='voteContainerLine' hidden>
+								<section id='voteContainer'>
+									<a href='#' class='voteLinks' id='voteDownLink' onclick="set_user_vote(-1)"> <section class='voteNumber' id='voteDown_val'></section> <section class='votePic' id='voteDown'></section> </a>
+									<a href='#' class='voteLinks' id='voteUpLink' onclick="set_user_vote(1);"> <section class='votePic' id='voteUp'></section> <section class='voteNumber' id='voteUp_val'></section> </a>
+									<div class="clear"></div>
+								</section>
+							</section>
+						</section>
 						<hr class='splitter'>
 						
 						<!-- Controls -->
 						<section id='media-controls'>
-							<button id='replay' class='mediaControls' title='replay' onclick='replayMedia();'>
-								Replay
-							</button>
-							<button id='play' class='mediaControls' title='play' onclick='togglePlayPause();'>
-								Play
-							</button>
-							<button id='stop' class='mediaControls' title='stop' onclick='stopPlayer();'>
-								Stop
-							</button>
-							<button id='volume-plus' class='mediaControls' title='increase volume' onclick='changeVolume("+");'>
-								Increase volume
-							</button>
-							<button id='volume-minus' class='mediaControls' title='decrease volume' onclick='changeVolume("-");'>
-								Decrease volume
-							</button>
-							<button id='mute' class='mediaControls' title='mute' onclick='toggleMute("true");'>
-								Mute
-							</button>
-							<input type='button' value='[ ]' onclick='console.log("open the last image with light-box")'>
-						</section>
-						
-						<section id='voteContainerLine'>
-							<section id='voteContainer'>
-								<a href='#' class='voteLinks' id='voteDownLink' onclick="set_user_vote(-1)"> <section class='voteNumber' id='voteDown_val'></section> <section class='votePic' id='voteDown'></section> </a>
-								<a href='#' class='voteLinks' id='voteUpLink' onclick="set_user_vote(1);"> <section class='votePic' id='voteUp'></section> <section class='voteNumber' id='voteUp_val'></section> </a>
-								<div class="clear"></div>
-							</section>
+							<button type='button' aria-hidden="true" class='btn btn-sm glyphicon glyphicon-repeat'     id='replay' title='replay' onclick='replayMedia();'>
+							<button type='button' aria-hidden="true" class='btn btn-sm glyphicon glyphicon-play'     id='play' title='play' onclick='togglePlayPause();'>
+							<button type='button' aria-hidden="true" class='btn btn-sm glyphicon glyphicon-stop'     id='stop' title='stop' onclick='stopPlayer();'>
+							<button type='button' aria-hidden="true" class='btn btn-sm glyphicon glyphicon-volume-up'     id='volume-plus' title='increase volume' onclick='changeVolume("+");'>
+							<button type='button' aria-hidden="true" class='btn btn-sm glyphicon glyphicon-volume-down'     id='volume-minus' title='decrease volume' onclick='changeVolume("-");'>
+							<button type='button' aria-hidden="true" class='btn btn-sm glyphicon glyphicon-volume-off'     id='mute' title='mute' onclick='toggleMute("true");'>
+							<button type='button' aria-hidden="true" class='btn btn-sm glyphicon glyphicon-fullscreen'     id='fullscreen' title='fullscreen' onclick='fullscreen();'>
 						</section>
 					</section>
 				</section>
@@ -121,22 +110,37 @@
 				<section id='admin_button_holder'></section>
 
 				<article id='videoDescriptionHolder'>
-					<h2 id='title'></h2>
-					<section id='profile'>
-						<section id='profileBody'></section>
-						<section id='uploadBy'></section>
-						<input type='button' value='Subscribe' />
-					</section><br>
+					<!-- <section class='leftHolder'> -->
+						<h2 id='title'></h2>
+						<section id='ownerDetails'>
+							<img id='profileBody' class="profilePicOwner tooltip"></img>
+							<section id='ownerProfile'>
+								<section id='ownerFullName'></section>
+								<input type='button' id='subscribe' value='Subscribe' />	
+								<div class='clear'></div>
+							</section>
+							<div class='clear'></div>
+						</section>
+					<!-- </section> -->
 					
-					<section>participants:</section>
+					<section id='voteContainerLine'>
+						<section id='voteContainer'>
+							<a href='#' class='voteLinks' id='voteDownLink' onclick="set_user_vote(-1)"> <section class='voteNumber' id='voteDown_val'></section> <section class='votePic' id='voteDown'></section> </a>
+							<a href='#' class='voteLinks' id='voteUpLink' onclick="set_user_vote(1);"> <section class='votePic' id='voteUp'></section> <section class='voteNumber' id='voteUp_val'></section> </a>
+							<div class="clear"></div>
+						</section>
+					</section><br>
+							
+					<b><section class="videoParticipants">participants:</section></b>
 					<ul id='participants'></ul>
 					<section id='addToPlaylist'></section>
 					<section id='shareIcons'></section>
+					<b><section>view times:</section></b>
 					<section id='viewTimes'></section><br>
 					
 					
-					<section id='date'></section>
-					<section id='organization'></section>
+					<b><section id='date'></section></b>
+					<b><section id='organization'></section></b>
 					<section id='description'></section>
 				</article>
 				

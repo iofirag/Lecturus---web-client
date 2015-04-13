@@ -206,10 +206,32 @@ h1 {
 	/*padding-top:2px;
 	 padding-bottom: 2px;*/
 }
+
+#videoDescriptionHolder{
+	/*float:left;*/
+	text-align: left;
+}
+.leftHolder{
+}
 #title{
 	font-size: 120%;
 	font-weight: bold;
+	text-align: left;
 }
-#videoDescriptionHolder{
-	float:left;
+#profile{
+}
+.profilePicOwner{
+	/*width: 35px;
+	height: 35px;*/
+	background: #1C454B;
+	-moz-border-radius: 17.5px;
+	-webkit-border-radius: 17.5px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+}
+#ownerProfile{
+	/*float:left;*/
+}
+#subscribe{
+	/*float:left;*/
 }
