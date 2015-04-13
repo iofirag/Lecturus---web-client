@@ -124,13 +124,16 @@ function run_media_player(data, minimal_flag){
 		$('#videoTitle').html('&nbsp;> ' + videoJson.name);
 		
 		$('#title').text(videoJson.name);
-		$.each(videoJson.participants ,function(i,item){
-			$('#participants').append(item.user+'<br>'); //'<img id="profileBody" class="profilePic tooltip"></img>'+
-		});
+		
 		$('#profileBody').attr("src" ,'includes/img/personThumbnail.jpg');
 		$('#profileBody').attr('title',videoJson.owner);
 		
 		$('#ownerFullName').text('Ofir Aghai');
+		$.each(videoJson.participants ,function(i,item){
+			icon = '<img id="profileBody" title='+item.user+' class="profilePic tooltip" src="includes/img/personThumbnail.jpg"></img>';
+			$('#participants').append(icon);
+		});
+		
 		$('#viewTimes').text(videoJson.views);
 		
 		// Votes
