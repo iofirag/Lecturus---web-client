@@ -216,7 +216,7 @@ h1 {
 .leftHolder{
 }
 #title{
-	font-size: 120%;
+	font-size: 200%;
 	font-weight: bold;
 	text-align: left;
 }
@@ -230,12 +230,18 @@ h1 {
 	-webkit-border-radius: 17.5px;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
+	
 }
 #ownerProfile{
-	/*float:left;*/
+	display: inline-block;
+	margin-left: 3%;
+}
+#ownerFullName{
+	font-weight: bolder;
 }
 #subscribe{
-	/*float:left;*/
+   color: black;
+   font-weight: bolder;
 }
 .title{
 	font-weight: bold;
@@ -243,7 +249,35 @@ h1 {
 #videoParticipants{
 	
 }
+#viewTimes{
+	float:right;
+}
 #participants{
 	height: 50px;
 }
-
+#addToPlaylist{
+	/*background-color: transparent;
+	padding: 0;*/
+}
+#date{
+	font-weight: bold;
+	float:left;
+	margin-right: 3%;
+}
+#organization{
+	font-weight: bold;
+	display: flex;
+}
+#footer{
+	text-align: left;
+}
+#beforeComments{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#commentsTitle{
+	  
+}
+#afterCommentsTitle{
+	margin-top: 20px;
+}

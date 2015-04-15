@@ -128,7 +128,7 @@ function run_media_player(data, minimal_flag){
 		$('#profileBody').attr("src" ,'includes/img/personThumbnail.jpg');
 		$('#profileBody').attr('title',videoJson.owner);
 		
-		$('#ownerFullName').text('Ofir Aghai');
+		set_owner_full_name(videoJson.owner);
 		$.each(videoJson.participants ,function(i,item){
 			icon = '<img id="profileBody" title='+item.user+' class="profilePic tooltip" src="includes/img/personThumbnail.jpg"></img>';
 			$('#participants').append(icon);
@@ -140,6 +140,18 @@ function run_media_player(data, minimal_flag){
 		$('#voteDown_val').html(videoJson.rating.negative.value);
 		$('#voteUp_val').text(videoJson.rating.positive.value);
 		
+		$('#share').on('click',function(e){
+			if ($('#shareIcons').children().length > 0){
+				$('#share').removeClass('btn-warning');
+				$('#shareIcons').empty();
+			}else{
+				$('#share').addClass('btn-warning');
+				$('#shareIcons').share({
+			        networks: ['facebook','googleplus','email','twitter','linkedin','pinterest','tumblr','in1','stumbleupon','digg'],
+			        theme: 'square'
+			    });
+		   	}
+		 });
 		$('#date').text( dateFromTimestamp(videoJson.timestamp) );
 		$('#organization').text(','+videoJson.org);
 		$('#description').text(videoJson.description);
@@ -160,7 +172,31 @@ function run_media_player(data, minimal_flag){
 	
 	
 }
-
+function set_owner_full_name(mail){
+	$.ajax({
+		type : "Post",
+		url :  'http://lecturus.herokuapp.com/users/getUser',
+		async : false,
+		data : {
+			email : mail
+		},
+		dataType : 'json',
+		ContentType : 'application/x-www-form-urlencoded',
+		success : function(data) {
+			if (data.status==1){
+				name = data.info.name;
+				fullName = name; 
+				$('#ownerFullName').text(fullName);
+			}else{
+				console.log('server status code are not 1');
+			}
+		},
+		error : function(objRequest, errortype) {
+			console.log(errortype);
+			console.log("Can't do because: " + errortype);
+		}
+	});
+}
 function dateFromTimestamp(timestamp){
 	months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
 	var jsDate = new Date(timestamp*1000);
@@ -561,7 +597,8 @@ function showOp(){
 // Use only in playmovie.html
 function show_edit_button_if_admin_or_participants(){
 	if (isAdmin()){
-		$('#admin_button_holder').html("<input type='button' value='edit' onclick='goto_editPage();'>");
+		btn = $("<button type='button' aria-hidden='true' class='btn btn-sm btn-info glyphicon glyphicon-wrench' onclick='goto_editPage();'>edit</button>");
+		$('#media-controls').append(btn);
 		console.log('show button');
 	}
 }

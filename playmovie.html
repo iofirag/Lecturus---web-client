@@ -6,14 +6,18 @@
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script src='includes/js/shared_functions.js'></script>
 		<script src='includes/js/bootstrap.js'></script>
+		
+		<script src="includes/iatek-jquery-share-430ee9a/jquery.share.js"></script>
+		<link rel="stylesheet" href='includes/iatek-jquery-share-430ee9a/jquery.share.css'>
 		<!-- lecturus js - sound Handler -->
 		<script src="includes/js/playmovie.js"></script>
 		<script src="includes/js/lightbox.min.js"></script>
 		<link rel="stylesheet" href="includes/css/reset.css">
-		<link rel='stylesheet' href='includes/css/bootstrap.css'>
+		<link rel='stylesheet' href='includes/css/bootstrap.css'>	
+		
 		<link rel='stylesheet' href='includes/css/media-player.css'>
 		<link rel='stylesheet' href='includes/css/media-player-controls.css'>
-		<!-- <link rel="stylesheet" href="includes/css/main.css"> -->
+		
 		<!-- Google API -->
 		<meta name="google-signin-clientid" content="3064416766-5qgmie4thvudo3nh6oofnkvd52i8loed.apps.googleusercontent.com" />
 		<meta name="google-signin-cookiepolicy" content="single_host_origin" />
@@ -116,7 +120,7 @@
 							<img id='profileBody' class="profilePicOwner tooltip"></img>
 							<section id='ownerProfile'>
 								<section id='ownerFullName'></section>
-								<input type='button' id='subscribe' value='Subscribe' />	
+								<input type='button' id='subscribe' class="btn-warning" value='Subscribe' />	
 								<div class='clear'></div>
 							</section>
 							<div class='clear'></div>
@@ -130,20 +134,34 @@
 							<div class="clear"></div>
 						</section>
 					</section><br>
+					<!-- <section id='viewTimesTitle' class='title'>view times:</section> -->
+					<section id='viewTimes' class='glyphicon glyphicon-triangle-right'></section>
 							
 					<section id="videoParticipants" class='title'>participants:</section>
 					<ul id='participants'></ul>
-					<section id='addToPlaylist'></section>
-					<section id='shareIcons'></section>
-					<section id='viewTimesTitle' class='title'>view times:</section>
-					<section id='viewTimes'></section><br>
 					
+					<button type="button" id='addToPlaylist' class="btn btn-sm">
+					  <span class="glyphicon glyphicon-heart glyphicon-bookmark" aria-hidden="true"></span> Add to a playlist
+					</button>
 					
-					<b><section id='date'></section></b>
-					<b><section id='organization'></section></b>
+					<button type="button" id='share' class="btn btn-sm">
+					  <span class="glyphicon glyphicon-share" aria-hidden="true"></span> Share
+					</button>
+					<section id="shareIcons"></section>
+					<br>
+					
+					<section id='date'></section>
+					<section id='organization'></section>
+					<div class="clear"></div>
 					<section id='description'></section>
 				</article>
+				<hr id='beforeComments'>
 				
+				<footer id='footer'>
+					<section id='commentsTitle'>Comments</section>
+					<hr id='afterCommentsTitle'>
+					<section>title</section>
+				</footer>
 			</section>
 		</div>
 	</body>
